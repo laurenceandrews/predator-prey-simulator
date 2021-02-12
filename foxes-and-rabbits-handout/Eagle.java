@@ -24,6 +24,8 @@ public class Eagle extends Predator
     // The food value of a single rabbit. In effect, this is the
     // number of steps a fox can go before it has to eat again.
     private static final int FOOD_VALUE = 20;
+    
+    
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
 

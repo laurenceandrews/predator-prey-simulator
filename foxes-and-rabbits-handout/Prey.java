@@ -11,11 +11,7 @@ import java.util.Random;
  */
 public abstract class Prey extends Animal
 {
-    // 
-    private static final Random rand = Randomizer.getRandom();
-    
     private int fear;
-    private int age;
     private int foodLevel;
 
     /**
@@ -29,12 +25,6 @@ public abstract class Prey extends Animal
     public Prey(boolean randomAge, Field field, Location location)
     {
         super(field, location);
-        if(randomAge) {
-            age = rand.nextInt(getMaxAge());
-        }
-        else {
-            age = 0;
-        }
         fear = 0;
     }
 
@@ -60,43 +50,6 @@ public abstract class Prey extends Animal
         }
     }
 
-    /**
-     * Increase the age.
-     * This could result in the rabbit's death.
-     */
-    private void incrementAge()
-    {
-        age++;
-        if(age > getMaxAge()) {
-            setDead();
-        }
-    }
-
-    abstract void giveBirth(List<Animal> newPrey);
-
-    /**
-     * Generate a number representing the number of births,
-     * if it can breed.
-     * @return The number of births (may be zero).
-     */
-    protected int breed()
-    {
-        int births = 0;
-        if(canBreed() && rand.nextDouble() <= getBreedingProbability()) {
-            births = rand.nextInt(getMaxLitterSize()) + 1;
-        }
-        return births;
-    }
-
-    /**
-     * A rabbit can breed if it has reached the breeding age.
-     * @return true if the rabbit can breed, false otherwise.
-     */
-    private boolean canBreed()
-    {
-        return age >= getBreedingAge();
-    }
-
     private void increaseFear()
     {
         if (predatorsNearby().size() > 2) {
@@ -112,14 +65,4 @@ public abstract class Prey extends Animal
     {
         return fear > 2;
     }
-
-    // run twice as fast if scared
-
-    abstract int getBreedingAge();
-
-    abstract int getMaxAge();
-
-    abstract double getBreedingProbability();
-
-    abstract int getMaxLitterSize();
 }

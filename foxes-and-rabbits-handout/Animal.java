@@ -1,5 +1,6 @@
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * A class representing shared characteristics of animals.
@@ -9,8 +10,17 @@ import java.util.ArrayList;
  */
 public abstract class Animal
 {
+    private static final Random rand = Randomizer.getRandom();
+
     // Whether the animal is alive or not.
     private boolean alive;
+
+    private boolean isMale;
+    
+    private int age;
+
+    private static final double GENDER_PROBABILITY = 0.5;
+
     // The animal's field.
     private Field field;
     // The animal's position in the field.
@@ -37,14 +47,39 @@ public abstract class Animal
         freeAdjacentLocations = new ArrayList<>();
         nearbyPredators = new ArrayList<Object>();
         nearbyPrey = new ArrayList<Object>();
+
+        int maleOrFemale = rand.nextInt(1);
+        if (maleOrFemale < GENDER_PROBABILITY) {
+            isMale = true;
+        }
+
+        if(randomAge) {
+            age = rand.nextInt(getMaxAge());
+        }
+        else {
+            age = 0;
+        }
+        
+        incrementAge();
     }
 
-    /**
-     * Make this animal act - that is: make it do
-     * whatever it wants/needs to do.
-     * @param newAnimals A list to receive newly born animals.
-     */
-    abstract public void act(List<Animal> newAnimals);
+    public void act(List<Animal> newRabbits) {
+        incrementAge();
+        if(isAlive()) {
+            giveBirth(newRabbits);            
+            // Try to move into a free location.
+            Location newLocation = getField().freeAdjacentLocation(getLocation());
+            if(newLocation != null) {
+                setLocation(newLocation);
+            }
+            else {
+                // Overcrowding.
+                setDead();
+            }
+        }
+    }
+
+    abstract void incrementAge();
 
     /**
      * Check whether the animal is alive or not.
@@ -106,6 +141,81 @@ public abstract class Animal
         return freeAdjacentLocations.size() <= 0;
     }
 
+    protected void giveBirth(List<Animal> newAnimal)
+    {
+        // New rabbits are born into adjacent locations.
+        // Get a list of adjacent free locations.
+        Field field = getField();
+        List<Location> free = field.getFreeAdjacentLocations(getLocation());
+        int births = breed();
+
+        if (mateNearby()) {
+            for(int b = 0; b < births && free.size() > 0; b++) {
+                Location loc = free.remove(0);
+                Cricket young = new Cricket(false, field, loc);
+                newAnimal.add(young);
+            }
+        }
+    }
+
+    boolean mateNearby(Animal animalClass)
+    {      
+        for (int i = 0; i < getField().adjacentLocations(getLocation()).size(); i++) {
+            if ((field.getObjectAt(field.adjacentLocations(getLocation()).get(i)) == animalClass) &&
+            (field.getObjectAt(field.adjacentLocations(getLocation()).get(i)) == animalClass) != getIsMale()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Generate a number representing the number of births,
+     * if it can breed.
+     * @return The number of births (may be zero).
+     */
+    protected int breed()
+    {
+        int births = 0;
+        if(canBreed() && rand.nextDouble() <= getBreedingProbability()) {
+            births = rand.nextInt(getMaxLitterSize()) + 1;
+        }
+        return births;
+    }
+
+    /**
+     * A fox can breed if it has reached the breeding age.
+     */
+    private boolean canBreed()
+    {
+        return age >= getBreedingAge();
+    }
+
+    abstract int getBreedingAge();
+
+    abstract void giveBirth(List<Animal> newPredators);
+
+    abstract double getBreedingProbability();
+
+    protected boolean getIsMale() {
+        return isMale;
+    }
+
+    abstract int getMaxLitterSize();
+
+    abstract boolean mateNearby();
+
+    abstract int getMaxAge();
+
+    @Override
+    protected void incrementAge()
+    {
+        age++;
+        if(age > getMaxAge()) {
+            setDead();
+        }
+    }
+    
     protected List<Object> predatorsNearby()
     {      
         if (freeAdjacentLocations.size() > 0) {

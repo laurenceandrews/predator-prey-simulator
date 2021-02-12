@@ -1,5 +1,4 @@
 import java.util.List;
-import java.util.ArrayList;
 
 /**
  * A class representing shared characteristics of animals.
@@ -15,13 +14,7 @@ public abstract class Animal
     private Field field;
     // The animal's position in the field.
     private Location location;
-
-    private List<Location> freeAdjacentLocations;
-
-    private List<Object> nearbyPredators;
-
-    private List<Object> nearbyPrey;
-
+    
     /**
      * Create a new animal at location in field.
      * 
@@ -33,12 +26,8 @@ public abstract class Animal
         alive = true;
         this.field = field;
         setLocation(location);
-
-        freeAdjacentLocations = new ArrayList<>();
-        nearbyPredators = new ArrayList<Object>();
-        nearbyPrey = new ArrayList<Object>();
     }
-
+    
     /**
      * Make this animal act - that is: make it do
      * whatever it wants/needs to do.
@@ -77,7 +66,7 @@ public abstract class Animal
     {
         return location;
     }
-
+    
     /**
      * Place the animal at the new location in the given field.
      * @param newLocation The animal's new location.
@@ -90,7 +79,7 @@ public abstract class Animal
         location = newLocation;
         field.place(this, newLocation);
     }
-
+    
     /**
      * Return the animal's field.
      * @return The animal's field.
@@ -98,35 +87,5 @@ public abstract class Animal
     protected Field getField()
     {
         return field;
-    }
-
-    protected boolean surroundingsEmpty()
-    {
-        freeAdjacentLocations = field.getFreeAdjacentLocations(location);
-        return freeAdjacentLocations.size() <= 0;
-    }
-
-    protected List<Object> predatorsNearby()
-    {      
-        if (freeAdjacentLocations.size() > 0) {
-            for (int i = 0; i < freeAdjacentLocations.size(); i++) {
-                if (field.getObjectAt(freeAdjacentLocations.get(i)) instanceof Predator) {
-                    nearbyPredators.add(field.getObjectAt(freeAdjacentLocations.get(i)));
-                }
-            }
-        }
-        return nearbyPredators;
-    }
-
-    protected List<Object> preyNearby()
-    {
-        if (freeAdjacentLocations.size() > 0) {
-            for (int i = 0; i < freeAdjacentLocations.size(); i++) {
-                if (field.getObjectAt(freeAdjacentLocations.get(i)) instanceof Prey) {
-                    nearbyPrey.add(field.getObjectAt(freeAdjacentLocations.get(i)));
-                }
-            }
-        }
-        return nearbyPredators;
     }
 }

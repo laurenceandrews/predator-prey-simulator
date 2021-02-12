@@ -90,4 +90,34 @@ public class Snake extends Predator
     {
         return FOOD_VALUE;
     } 
+    
+    @Override
+    protected Location findFood()
+    {
+        Field field = getField();
+        List<Location> adjacent = field.adjacentLocations(getLocation());
+        Iterator<Location> it = adjacent.iterator();
+        while(it.hasNext()) {
+            Location where = it.next();
+            Object animal = field.getObjectAt(where);
+            if(animal instanceof Mouse) {
+                Mouse mouse = (Mouse) animal;
+                if(mouse.isAlive()) { 
+                    mouse.setDead();
+                    getFoodValue();
+                    return where;
+                }
+            }
+            
+            else if(animal instanceof Cricket) {
+                Cricket cricket = (Cricket) animal;
+                if(cricket.isAlive()) { 
+                    cricket.setDead();
+                    getFoodValue();
+                    return where;
+                }
+            }
+        }
+        return null;
+    }
 }

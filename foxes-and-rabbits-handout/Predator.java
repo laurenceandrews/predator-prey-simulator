@@ -45,7 +45,7 @@ public abstract class Predator extends Animal
      * Only the first live rabbit is eaten.
      * @return Where food was found, or null if it wasn't.
      */
-    private Location findFood()
+    protected Location findFood()
     {
         Field field = getField();
         List<Location> adjacent = field.adjacentLocations(getLocation());

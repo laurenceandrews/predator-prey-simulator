@@ -50,8 +50,8 @@ public class Cricket extends Prey
         int births = breed();
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
-            Cricket cricket = new Cricket(false, field, loc);
-            newCrickets.add(young);
+            Cricket young = new Cricket(false, field, loc);
+            newCricket.add(young);
         }
     }
     

@@ -1,0 +1,18 @@
+#BlueJ class context
+comment0.target=Cricket
+comment0.text=\r\n\ A\ simple\ model\ of\ a\ rabbit.\r\n\ Rabbits\ age,\ move,\ breed,\ and\ die.\r\n\ \r\n\ @author\ David\ J.\ Barnes\ and\ Michael\ K\u00F6lling\r\n\ @version\ 2016.02.29\ (2)\r\n
+comment1.params=randomAge\ field\ location
+comment1.target=Cricket(boolean,\ Field,\ Location)
+comment1.text=\r\n\ Create\ a\ new\ rabbit.\ A\ rabbit\ may\ be\ created\ with\ age\r\n\ zero\ (a\ new\ born)\ or\ with\ a\ random\ age.\r\n\ \r\n\ @param\ randomAge\ If\ true,\ the\ rabbit\ will\ have\ a\ random\ age.\r\n\ @param\ field\ The\ field\ currently\ occupied.\r\n\ @param\ location\ The\ location\ within\ the\ field.\r\n
+comment2.params=newCricket
+comment2.target=void\ giveBirth(java.util.List)
+comment2.text=\r\n\ Check\ whether\ or\ not\ this\ rabbit\ is\ to\ give\ birth\ at\ this\ step.\r\n\ New\ births\ will\ be\ made\ into\ free\ adjacent\ locations.\r\n\ @param\ newRabbits\ A\ list\ to\ return\ newly\ born\ rabbits.\r\n
+comment3.params=
+comment3.target=int\ getBreedingAge()
+comment4.params=
+comment4.target=int\ getMaxAge()
+comment5.params=
+comment5.target=double\ getBreedingProbability()
+comment6.params=
+comment6.target=int\ getMaxLitterSize()
+numComments=7

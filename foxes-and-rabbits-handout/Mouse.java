@@ -50,8 +50,8 @@ public class Mouse extends Prey
         int births = breed();
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
-            Mouse mouse = new Mouse(false, field, loc);
-            newMice.add(young);
+            Mouse young = new Mouse(false, field, loc);
+            newMouse.add(young);
         }
     }
     

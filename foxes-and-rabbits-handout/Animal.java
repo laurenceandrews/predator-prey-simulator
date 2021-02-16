@@ -55,7 +55,26 @@ public abstract class Animal
      * whatever it wants/needs to do.
      * @param newAnimals A list to receive newly born animals.
      */
-    abstract public void act(List<Animal> newAnimals);
+    protected void act(List<Animal> newAnimals) {
+        incrementHunger();
+        if(isAlive()) {
+            giveBirth(newAnimals);           
+            // Move towards a source of food if found.
+            Location newLocation = findFood();
+            if(newLocation == null) { 
+                // No food found - try to move to a free location.
+                newLocation = getField().freeAdjacentLocation(getLocation());
+            }
+            // See if it was possible to move.
+            if(newLocation != null) {
+                setLocation(newLocation);
+            }
+            else {
+                // Overcrowding.
+                setDead();
+            }
+        }
+    }
 
     /**
      * Check whether the animal is alive or not.
@@ -189,7 +208,8 @@ public abstract class Animal
         List<Location> free = field.getFreeAdjacentLocations(getLocation());
         int births = breed();
 
-        Animal animal = newAnimal.get(0);
+        Animal animal = this;
+        //
 
         if (mateNearby(animal)) {
             for(int b = 0; b < births && free.size() > 0; b++) {
@@ -200,7 +220,7 @@ public abstract class Animal
     }
 
     private Animal createYoung(Animal animal, Location loc) {
-        Animal young;
+        Animal young = null;
         if (animal instanceof Eagle) {
             young = new Eagle(false, field, loc);
         } else if (animal instanceof Scorpion) {
@@ -214,12 +234,7 @@ public abstract class Animal
         }
         return young;
     }
-    
-    private Animal checkAnimalType(Animal animal)
-    {
-        
-    }
-    
+
     protected void incrementAge()
     {
         age++;
@@ -245,7 +260,7 @@ public abstract class Animal
     abstract int getMaxLitterSize();
 
     abstract int getFoodValue(); 
-    
+
     protected Location findFood()
     {
         Field field = getField();
@@ -285,7 +300,4 @@ public abstract class Animal
             foodLevel = getFoodValue();
         }
     }
-    
-    
-    
 }

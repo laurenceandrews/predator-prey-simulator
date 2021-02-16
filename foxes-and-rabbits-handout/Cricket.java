@@ -78,9 +78,4 @@ public class Cricket extends Prey
     {
         getMaxLitterSize();
     }
-    
-    protected int setCricketFoodValue()
-    {
-        getFoodValue;
-    }
 }

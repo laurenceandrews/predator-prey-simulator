@@ -10,22 +10,7 @@ import java.util.Random;
  * @version 2016.02.29 (2)
  */
 public class Eagle extends Predator
-{
-    // Characteristics shared by all foxes (class variables).
-
-    // The age at which a fox can start to breed.
-    private static final int BREEDING_AGE = 5;
-    // The age to which a fox can live.
-    private static final int MAX_AGE = 200;
-    // The likelihood of a fox breeding.
-    private static final double BREEDING_PROBABILITY = 0.03;
-    // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 5;
-    // The food value of a single rabbit. In effect, this is the
-    // number of steps a fox can go before it has to eat again.
-    private static final int FOOD_VALUE = 20;
-    
-    
+{   
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
 
@@ -61,36 +46,6 @@ public class Eagle extends Predator
             newEagles.add(young);
         }
     }
-
-    @Override
-    protected int getBreedingAge()
-    {
-        return BREEDING_AGE;
-    }
-
-    @Override
-    protected int getMaxAge()
-    {
-        return MAX_AGE;
-    }
-
-    @Override
-    protected double getBreedingProbability()
-    {
-        return BREEDING_PROBABILITY;
-    }
-
-    @Override
-    protected int getMaxLitterSize()
-    {
-        return MAX_LITTER_SIZE;
-    }
-
-    @Override
-    protected int getFoodValue()
-    {
-        return FOOD_VALUE;
-    } 
     
     @Override
     protected Location findFood()
@@ -124,12 +79,12 @@ public class Eagle extends Predator
     
     protected int setEagleMaxAge()
     {
-         getMaxAge();
+        getMaxAge();
     }
     
     protected int setEagleBreedingAge()
     {
-         getBreedingAge();
+        getBreedingAge();
     }
     
     protected double setEagleBreedingProbability()
@@ -142,8 +97,9 @@ public class Eagle extends Predator
         getMaxLitterSize();
     }
     
-    protected int setEagleFoodValue()
+    @Override
+    protected int setFoodValue(Animal animalClass)
     {
-        getFoodValue;
+        foodValue = getFoodValue();
     }
 }

@@ -265,4 +265,6 @@ public abstract class Animal
         return FOOD_VALUE;
     }
     
+    abstract int setFoodValue(Animal animalClass);
+    
 }

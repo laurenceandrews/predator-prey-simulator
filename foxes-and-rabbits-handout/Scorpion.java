@@ -132,8 +132,9 @@ public class Scorpion extends Predator
         getMaxLitterSize();
     }
     
-    protected int setScorpionFoodValue()
+    @Override
+    protected int setFoodValue()
     {
-        getFoodValue;
+        foodValue = getFoodValue();
     }
 }

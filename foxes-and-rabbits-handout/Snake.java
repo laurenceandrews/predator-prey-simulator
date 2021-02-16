@@ -141,8 +141,9 @@ public class Snake extends Predator
         getMaxLitterSize();
     }
     
-    protected int setSnakeFoodValue()
+    @Override
+    protected int setFoodValue()
     {
-        getFoodValue;
+        foodValue = getFoodValue();
     }
 }

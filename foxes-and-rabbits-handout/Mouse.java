@@ -98,11 +98,4 @@ public class Mouse extends Prey
     {
         getMaxLitterSize();
     }
-    
-    protected int setMouseFoodValue()
-    {
-        getFoodValue;
-    }
-    
-    
 }

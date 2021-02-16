@@ -10,10 +10,7 @@ import java.util.Random;
  * @version 2016.02.29 (2)
  */
 public class Eagle extends Predator
-<<<<<<< HEAD
 {   
-=======
-{
     // Characteristics shared by all foxes (class variables).
 
     // The age at which a fox can start to breed.
@@ -27,7 +24,7 @@ public class Eagle extends Predator
     // The food value of a single rabbit. In effect, this is the
     // number of steps a fox can go before it has to eat again.
     private static final int FOOD_VALUE = 20;
->>>>>>> parent of 72a9fdf (Base Task 2)
+
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
 
@@ -63,7 +60,7 @@ public class Eagle extends Predator
             newEagles.add(young);
         }
     }
-    
+
     @Override
     protected Location findFood()
     {
@@ -81,7 +78,7 @@ public class Eagle extends Predator
                     return where;
                 }
             }
-            
+
             else if(animal instanceof Snake) {
                 Snake snake = (Snake) animal;
                 if(snake.isAlive()) { 
@@ -93,27 +90,27 @@ public class Eagle extends Predator
         }
         return null;
     }
-    
+
     protected int setEagleMaxAge()
     {
         getMaxAge();
     }
-    
+
     protected int setEagleBreedingAge()
     {
         getBreedingAge();
     }
-    
+
     protected double setEagleBreedingProbability()
     {
         getBreedingProbability();
     }
-    
+
     protected int setEagleMaxLitterSize()
     {
         getMaxLitterSize();
     }
-    
+
     @Override
     protected int setFoodValue(Animal animalClass)
     {

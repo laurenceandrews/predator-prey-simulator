@@ -21,15 +21,15 @@ public abstract class Animal
     private List<Object> nearbyPredators;
 
     private List<Object> nearbyPrey;
-    
+
     private int BREEDING_AGE = 1;
-    
+
     private int MAX_AGE = 1;
-    
+
     private double BREEDING_PROBABILITY = 1;
-    
+
     private int MAX_LITTER_SIZE = 1;
-    
+
     private int FOOD_VALUE = 1;
 
     /**
@@ -116,7 +116,6 @@ public abstract class Animal
         return freeAdjacentLocations.size() <= 0;
     }
 
-<<<<<<< HEAD
     protected void giveBirth(List<Animal> newAnimal)
     {
         // New rabbits are born into adjacent locations.
@@ -181,9 +180,7 @@ public abstract class Animal
             setDead();
         }
     }
-    
-=======
->>>>>>> parent of 72a9fdf (Base Task 2)
+
     protected List<Object> predatorsNearby()
     {      
         if (freeAdjacentLocations.size() > 0) {
@@ -207,32 +204,32 @@ public abstract class Animal
         }
         return nearbyPredators;
     }
-    
+
     protected int getMaxAge()
     {
         return MAX_AGE;
     }
-    
+
     protected int getBreedingAge()
     {
         return BREEDING_AGE;
     }
-    
+
     protected double getBreedingProbability()
     {
         return BREEDING_PROBABILITY;
     }
-    
+
     protected int getMaxLitterSize()
     {
         return MAX_LITTER_SIZE;
     }
-    
+
     protected int getFoodValue()
     {
         return FOOD_VALUE;
     }
-    
+
     abstract int setFoodValue(Animal animalClass);
-    
+
 }

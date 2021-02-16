@@ -103,4 +103,6 @@ public abstract class Predator extends Animal
     }
 
     abstract int getFoodValue();
+    
+    abstract int getMaxAge();
 }

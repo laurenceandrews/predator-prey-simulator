@@ -31,6 +31,16 @@ public abstract class Animal
     private List<Object> nearbyPredators;
 
     private List<Object> nearbyPrey;
+    
+    private int BREEDING_AGE = 1;
+    
+    private int MAX_AGE = 1;
+    
+    private double BREEDING_PROBABILITY = 1;
+    
+    private int MAX_LITTER_SIZE = 1;
+    
+    private int FOOD_VALUE = 1;
 
     /**
      * Create a new animal at location in field.
@@ -191,21 +201,11 @@ public abstract class Animal
         return age >= getBreedingAge();
     }
 
-    abstract int getBreedingAge();
-
-    abstract void giveBirth(List<Animal> newPredators);
-
-    abstract double getBreedingProbability();
-
     protected boolean getIsMale() {
         return isMale;
     }
 
-    abstract int getMaxLitterSize();
-
     abstract boolean mateNearby();
-
-    abstract int getMaxAge();
 
     @Override
     protected void incrementAge()
@@ -239,4 +239,30 @@ public abstract class Animal
         }
         return nearbyPredators;
     }
+    
+    protected int getMaxAge()
+    {
+        return MAX_AGE;
+    }
+    
+    protected int getBreedingAge()
+    {
+        return BREEDING_AGE;
+    }
+    
+    protected double getBreedingProbability()
+    {
+        return BREEDING_PROBABILITY;
+    }
+    
+    protected int getMaxLitterSize()
+    {
+        return MAX_LITTER_SIZE;
+    }
+    
+    protected int getFoodValue()
+    {
+        return FOOD_VALUE;
+    }
+    
 }

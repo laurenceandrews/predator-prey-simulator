@@ -78,4 +78,31 @@ public class Mouse extends Prey
     {
         return MAX_LITTER_SIZE;
     }
+    
+    protected int setMouseMaxAge()
+    {
+         getMaxAge();
+    }
+    
+    protected int setMouseBreedingAge()
+    {
+         getBreedingAge();
+    }
+    
+    protected double setMouseBreedingProbability()
+    {
+        getBreedingProbability();
+    }
+    
+    protected int setMouseMaxLitterSize()
+    {
+        getMaxLitterSize();
+    }
+    
+    protected int setMouseFoodValue()
+    {
+        getFoodValue;
+    }
+    
+    
 }

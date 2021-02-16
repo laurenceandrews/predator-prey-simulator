@@ -121,4 +121,29 @@ public class Eagle extends Predator
         }
         return null;
     }
+    
+    protected int setEagleMaxAge()
+    {
+         getMaxAge();
+    }
+    
+    protected int setEagleBreedingAge()
+    {
+         getBreedingAge();
+    }
+    
+    protected double setEagleBreedingProbability()
+    {
+        getBreedingProbability();
+    }
+    
+    protected int setEagleMaxLitterSize()
+    {
+        getMaxLitterSize();
+    }
+    
+    protected int setEagleFoodValue()
+    {
+        getFoodValue;
+    }
 }

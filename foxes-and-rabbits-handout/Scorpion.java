@@ -111,4 +111,29 @@ public class Scorpion extends Predator
         }
         return null;
     }
+    
+    protected int setScorpionMaxAge()
+    {
+         getMaxAge();
+    }
+    
+    protected int setScorpionBreedingAge()
+    {
+         getBreedingAge();
+    }
+    
+    protected double setScorpionBreedingProbability()
+    {
+        getBreedingProbability();
+    }
+    
+    protected int setScorpionMaxLitterSize()
+    {
+        getMaxLitterSize();
+    }
+    
+    protected int setScorpionFoodValue()
+    {
+        getFoodValue;
+    }
 }

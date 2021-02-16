@@ -78,24 +78,4 @@ public class Cricket extends Prey
     {
         return MAX_LITTER_SIZE;
     }
-    
-    protected int setCricketMaxAge()
-    {
-         getMaxAge();
-    }
-    
-    protected int setCricketBreedingAge()
-    {
-         getBreedingAge();
-    }
-    
-    protected double setCricketBreedingProbability()
-    {
-        getBreedingProbability();
-    }
-    
-    protected int setCricketMaxLitterSize()
-    {
-        getMaxLitterSize();
-    }
 }

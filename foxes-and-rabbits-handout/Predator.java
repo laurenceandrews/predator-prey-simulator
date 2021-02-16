@@ -13,12 +13,7 @@ import java.util.Random;
 public abstract class Predator extends Animal
 {
     // Characteristics shared by all prey
-    private static final Random rand = Randomizer.getRandom();
-
-    private int age;
-
-    private int foodLevel;
-
+    
     /**
      * Create a new rabbit. A rabbit may be created with age
      * zero (a new born) or with a random age.
@@ -30,16 +25,8 @@ public abstract class Predator extends Animal
     public Predator(boolean randomAge, Field field, Location location)
     {
         super(field, location);
-        if(randomAge) {
-            age = rand.nextInt(getMaxAge());
-            foodLevel = rand.nextInt(getFoodValue());
-        }
-        else {
-            age = 0;
-            foodLevel = getFoodValue();
-        }
     }
-
+    
     /**
      * Look for rabbits adjacent to the current location.
      * Only the first live rabbit is eaten.
@@ -95,52 +82,24 @@ public abstract class Predator extends Animal
         }
     }
 
-    /**
-     * Increase the age. This could result in the fox's death.
-     */
-    private void incrementAge()
-    {
-        age++;
-        if(age > getMaxAge()) {
-            setDead();
-        }
-    }
-
-    /**
-     * Make this fox more hungry. This could result in the fox's death.
-     */
-    private void incrementHunger()
-    {
-        foodLevel--;
-        if(foodLevel <= 0) {
-            setDead();
-        }
-    }
+    abstract void incrementHunger();
+        
+    abstract boolean mateNearby();
     
+    abstract List<Object> predatorsNearby();
+    
+    abstract List<Object> preyNearby();
+
     abstract void giveBirth(List<Animal> newPredators);
+    
+    abstract void incrementAge();
+    
+    abstract boolean canBreed();
 
-    /**
-     * Generate a number representing the number of births,
-     * if it can breed.
-     * @return The number of births (may be zero).
-     */
-    protected int breed()
-    {
-        int births = 0;
-        if(canBreed() && rand.nextDouble() <= getBreedingProbability()) {
-            births = rand.nextInt(getMaxLitterSize()) + 1;
-        }
-        return births;
-    }
-
-    /**
-     * A fox can breed if it has reached the breeding age.
-     */
-    private boolean canBreed()
-    {
-        return age >= getBreedingAge();
-    }
-
+    abstract int getAge();
+    
+    abstract int setAge();
+    
     abstract int getBreedingAge();
 
     abstract int getMaxAge();
@@ -149,7 +108,5 @@ public abstract class Predator extends Animal
 
     abstract int getMaxLitterSize();
 
-    abstract protected int getFoodValue();
-    
-    abstract protected int getMaxAge();
+    abstract int getFoodValue();
 }

@@ -121,29 +121,33 @@ public class Snake extends Predator
         return null;
     }
     
-    protected int setSnakeMaxAge()
-    {
-         getMaxAge();
-    }
-    
-    protected int setSnakeBreedingAge()
-    {
-         getBreedingAge();
-    }
-    
-    protected double setSnakeBreedingProbability()
-    {
-        getBreedingProbability();
-    }
-    
-    protected int setSnakeMaxLitterSize()
-    {
-        getMaxLitterSize();
-    }
-    
     @Override
-    protected int setFoodValue()
+    protected int getMaxAge()
     {
-        foodValue = getFoodValue();
+        return MAX_AGE;
+    }
+
+    @Override
+    protected int getBreedingAge()
+    {
+        return BREEDING_AGE;
+    }
+
+    @Override
+    protected double getBreedingProbability()
+    {
+        return BREEDING_PROBABILITY;
+    }
+
+    @Override
+    protected int getMaxLitterSize()
+    {
+        return MAX_LITTER_SIZE;
+    }
+
+    @Override
+    protected int getFoodValue()
+    {
+        return FOOD_VALUE;
     }
 }

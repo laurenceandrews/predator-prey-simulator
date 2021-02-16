@@ -1,5 +1,6 @@
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * A class representing shared characteristics of animals.
@@ -16,21 +17,19 @@ public abstract class Animal
     // The animal's position in the field.
     private Location location;
 
+    private int age;
+
+    private boolean isMale;
+
+    private int foodLevel;
+
     private List<Location> freeAdjacentLocations;
 
     private List<Object> nearbyPredators;
 
     private List<Object> nearbyPrey;
 
-    private int BREEDING_AGE = 1;
-
-    private int MAX_AGE = 1;
-
-    private double BREEDING_PROBABILITY = 1;
-
-    private int MAX_LITTER_SIZE = 1;
-
-    private int FOOD_VALUE = 1;
+    private static final Random rand = Randomizer.getRandom();
 
     /**
      * Create a new animal at location in field.
@@ -38,11 +37,12 @@ public abstract class Animal
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
-    public Animal(Field field, Location location)
+    public Animal(boolean randomAge, Field field, Location location)
     {
         alive = true;
         this.field = field;
         setLocation(location);
+        setRandomAge(randomAge);
 
         freeAdjacentLocations = new ArrayList<>();
         nearbyPredators = new ArrayList<Object>();
@@ -116,34 +116,6 @@ public abstract class Animal
         return freeAdjacentLocations.size() <= 0;
     }
 
-    protected void giveBirth(List<Animal> newAnimal)
-    {
-        // New rabbits are born into adjacent locations.
-        // Get a list of adjacent free locations.
-        Field field = getField();
-        List<Location> free = field.getFreeAdjacentLocations(getLocation());
-        int births = breed();
-
-        if (mateNearby()) {
-            for(int b = 0; b < births && free.size() > 0; b++) {
-                Location loc = free.remove(0);
-                Cricket young = new Cricket(false, field, loc);
-                newAnimal.add(young);
-            }
-        }
-    }
-
-    boolean mateNearby(Animal animalClass)
-    {      
-        for (int i = 0; i < getField().adjacentLocations(getLocation()).size(); i++) {
-            if ((field.getObjectAt(field.adjacentLocations(getLocation()).get(i)) == animalClass) &&
-            (field.getObjectAt(field.adjacentLocations(getLocation()).get(i)) == animalClass) != getIsMale()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     /**
      * Generate a number representing the number of births,
      * if it can breed.
@@ -158,27 +130,30 @@ public abstract class Animal
         return births;
     }
 
-    /**
-     * A fox can breed if it has reached the breeding age.
-     */
-    private boolean canBreed()
-    {
-        return age >= getBreedingAge();
-    }
-
     protected boolean getIsMale() {
         return isMale;
     }
 
-    abstract boolean mateNearby();
-
-    @Override
-    protected void incrementAge()
+    /**
+     * Make this fox more hungry. This could result in the fox's death.
+     */
+    private void incrementHunger()
     {
-        age++;
-        if(age > getMaxAge()) {
+        foodLevel--;
+        if(foodLevel <= 0) {
             setDead();
         }
+    }
+
+    boolean mateNearby(Animal animalClass)
+    {      
+        for (int i = 0; i < getField().adjacentLocations(getLocation()).size(); i++) {
+            if ((field.getObjectAt(field.adjacentLocations(getLocation()).get(i)) == animalClass) &&
+            (field.getObjectAt(field.adjacentLocations(getLocation()).get(i)) == animalClass) != getIsMale()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected List<Object> predatorsNearby()
@@ -205,31 +180,60 @@ public abstract class Animal
         return nearbyPredators;
     }
 
-    protected int getMaxAge()
+    protected void giveBirth(List<Animal> newAnimal)
     {
-        return MAX_AGE;
+        // New rabbits are born into adjacent locations.
+        // Get a list of adjacent free locations.
+        Field field = getField();
+        List<Location> free = field.getFreeAdjacentLocations(getLocation());
+        int births = breed();
+
+        //Animal animal = newAnimal.get(0);
+        //Class<?> animalType = animal.getClass();
+
+        if (mateNearby(newAnimal.get(0))) {
+            for(int b = 0; b < births && free.size() > 0; b++) {
+                Location loc = free.remove(0);                
+                Animal young = new Eagle(false, field, loc);
+                newAnimal.add(young);
+            }
+        }
     }
 
-    protected int getBreedingAge()
+    protected void incrementAge()
     {
-        return BREEDING_AGE;
+        age++;
+        if(age > getMaxAge()) {
+            setDead();
+        }
     }
 
-    protected double getBreedingProbability()
+    /**
+     * A fox can breed if it has reached the breeding age.
+     */
+    protected boolean canBreed()
     {
-        return BREEDING_PROBABILITY;
+        return age >= getBreedingAge();
     }
 
-    protected int getMaxLitterSize()
-    {
-        return MAX_LITTER_SIZE;
+    abstract int getBreedingAge();
+
+    abstract int getMaxAge();
+
+    abstract double getBreedingProbability();
+
+    abstract int getMaxLitterSize();
+
+    abstract int getFoodValue();
+
+    protected void setRandomAge(boolean randomAge) {
+        if(randomAge) {
+            age = rand.nextInt(getMaxAge());
+            foodLevel = rand.nextInt(getFoodValue());
+        }
+        else {
+            age = 0;
+            foodLevel = getFoodValue();
+        }
     }
-
-    protected int getFoodValue()
-    {
-        return FOOD_VALUE;
-    }
-
-    abstract int setFoodValue(Animal animalClass);
-
 }

@@ -112,29 +112,33 @@ public class Scorpion extends Predator
         return null;
     }
     
-    protected int setScorpionMaxAge()
-    {
-         getMaxAge();
-    }
-    
-    protected int setScorpionBreedingAge()
-    {
-         getBreedingAge();
-    }
-    
-    protected double setScorpionBreedingProbability()
-    {
-        getBreedingProbability();
-    }
-    
-    protected int setScorpionMaxLitterSize()
-    {
-        getMaxLitterSize();
-    }
-    
     @Override
-    protected int setFoodValue()
+    protected int getMaxAge()
     {
-        foodValue = getFoodValue();
+        return MAX_AGE;
+    }
+
+    @Override
+    protected int getBreedingAge()
+    {
+        return BREEDING_AGE;
+    }
+
+    @Override
+    protected double getBreedingProbability()
+    {
+        return BREEDING_PROBABILITY;
+    }
+
+    @Override
+    protected int getMaxLitterSize()
+    {
+        return MAX_LITTER_SIZE;
+    }
+
+    @Override
+    protected int getFoodValue()
+    {
+        return FOOD_VALUE;
     }
 }

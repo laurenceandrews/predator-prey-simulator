@@ -91,29 +91,33 @@ public class Eagle extends Predator
         return null;
     }
 
-    protected int setEagleMaxAge()
+    @Override
+    protected int getMaxAge()
     {
-        getMaxAge();
-    }
-
-    protected int setEagleBreedingAge()
-    {
-        getBreedingAge();
-    }
-
-    protected double setEagleBreedingProbability()
-    {
-        getBreedingProbability();
-    }
-
-    protected int setEagleMaxLitterSize()
-    {
-        getMaxLitterSize();
+        return MAX_AGE;
     }
 
     @Override
-    protected int setFoodValue(Animal animalClass)
+    protected int getBreedingAge()
     {
-        foodValue = getFoodValue();
+        return BREEDING_AGE;
+    }
+
+    @Override
+    protected double getBreedingProbability()
+    {
+        return BREEDING_PROBABILITY;
+    }
+
+    @Override
+    protected int getMaxLitterSize()
+    {
+        return MAX_LITTER_SIZE;
+    }
+
+    @Override
+    protected int getFoodValue()
+    {
+        return FOOD_VALUE;
     }
 }

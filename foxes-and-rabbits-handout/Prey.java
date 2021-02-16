@@ -10,13 +10,8 @@ import java.util.Random;
  * @version 2016.02.29 (2)
  */
 public abstract class Prey extends Animal
-{
-    // 
-    private static final Random rand = Randomizer.getRandom();
-    
+{    
     private int fear;
-    private int age;
-    private int foodLevel;
 
     /**
      * Create a new rabbit. A rabbit may be created with age
@@ -29,12 +24,6 @@ public abstract class Prey extends Animal
     public Prey(boolean randomAge, Field field, Location location)
     {
         super(field, location);
-        if(randomAge) {
-            age = rand.nextInt(getMaxAge());
-        }
-        else {
-            age = 0;
-        }
         fear = 0;
     }
 

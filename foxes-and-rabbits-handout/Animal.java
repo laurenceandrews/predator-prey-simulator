@@ -1,6 +1,5 @@
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * A class representing shared characteristics of animals.
@@ -10,17 +9,8 @@ import java.util.Random;
  */
 public abstract class Animal
 {
-    private static final Random rand = Randomizer.getRandom();
-
     // Whether the animal is alive or not.
     private boolean alive;
-
-    private boolean isMale;
-    
-    private int age;
-
-    private static final double GENDER_PROBABILITY = 0.5;
-
     // The animal's field.
     private Field field;
     // The animal's position in the field.
@@ -57,39 +47,14 @@ public abstract class Animal
         freeAdjacentLocations = new ArrayList<>();
         nearbyPredators = new ArrayList<Object>();
         nearbyPrey = new ArrayList<Object>();
-
-        int maleOrFemale = rand.nextInt(1);
-        if (maleOrFemale < GENDER_PROBABILITY) {
-            isMale = true;
-        }
-
-        if(randomAge) {
-            age = rand.nextInt(getMaxAge());
-        }
-        else {
-            age = 0;
-        }
-        
-        incrementAge();
     }
 
-    public void act(List<Animal> newRabbits) {
-        incrementAge();
-        if(isAlive()) {
-            giveBirth(newRabbits);            
-            // Try to move into a free location.
-            Location newLocation = getField().freeAdjacentLocation(getLocation());
-            if(newLocation != null) {
-                setLocation(newLocation);
-            }
-            else {
-                // Overcrowding.
-                setDead();
-            }
-        }
-    }
-
-    abstract void incrementAge();
+    /**
+     * Make this animal act - that is: make it do
+     * whatever it wants/needs to do.
+     * @param newAnimals A list to receive newly born animals.
+     */
+    abstract public void act(List<Animal> newAnimals);
 
     /**
      * Check whether the animal is alive or not.
@@ -151,6 +116,7 @@ public abstract class Animal
         return freeAdjacentLocations.size() <= 0;
     }
 
+<<<<<<< HEAD
     protected void giveBirth(List<Animal> newAnimal)
     {
         // New rabbits are born into adjacent locations.
@@ -216,6 +182,8 @@ public abstract class Animal
         }
     }
     
+=======
+>>>>>>> parent of 72a9fdf (Base Task 2)
     protected List<Object> predatorsNearby()
     {      
         if (freeAdjacentLocations.size() > 0) {

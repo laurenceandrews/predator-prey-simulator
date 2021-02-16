@@ -10,7 +10,24 @@ import java.util.Random;
  * @version 2016.02.29 (2)
  */
 public class Eagle extends Predator
+<<<<<<< HEAD
 {   
+=======
+{
+    // Characteristics shared by all foxes (class variables).
+
+    // The age at which a fox can start to breed.
+    private static final int BREEDING_AGE = 5;
+    // The age to which a fox can live.
+    private static final int MAX_AGE = 200;
+    // The likelihood of a fox breeding.
+    private static final double BREEDING_PROBABILITY = 0.03;
+    // The maximum number of births.
+    private static final int MAX_LITTER_SIZE = 5;
+    // The food value of a single rabbit. In effect, this is the
+    // number of steps a fox can go before it has to eat again.
+    private static final int FOOD_VALUE = 20;
+>>>>>>> parent of 72a9fdf (Base Task 2)
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
 

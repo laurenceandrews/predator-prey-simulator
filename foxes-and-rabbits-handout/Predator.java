@@ -24,33 +24,10 @@ public abstract class Predator extends Animal
      */
     public Predator(boolean randomAge, Field field, Location location)
     {
-        super(field, location);
+        super(randomAge, field, location);
     }
     
-    /**
-     * Look for rabbits adjacent to the current location.
-     * Only the first live rabbit is eaten.
-     * @return Where food was found, or null if it wasn't.
-     */
-    protected Location findFood()
-    {
-        Field field = getField();
-        List<Location> adjacent = field.adjacentLocations(getLocation());
-        Iterator<Location> it = adjacent.iterator();
-        while(it.hasNext()) {
-            Location where = it.next();
-            Object animal = field.getObjectAt(where);
-            if(animal instanceof Prey) {
-                Prey prey = (Prey) animal;
-                if(prey.isAlive()) { 
-                    prey.setDead();
-                    foodLevel = getFoodValue();
-                    return where;
-                }
-            }
-        }
-        return null;
-    }
+    
 
     /**
      * This is what the fox does most of the time: it hunts for
@@ -82,20 +59,6 @@ public abstract class Predator extends Animal
         }
     }
 
-    abstract void incrementHunger();
-        
-    abstract boolean mateNearby();
-    
-    abstract List<Object> predatorsNearby();
-    
-    abstract List<Object> preyNearby();
-
-    abstract void giveBirth(List<Animal> newPredators);
-    
-    abstract void incrementAge();
-    
-    abstract boolean canBreed();
-
     abstract int getAge();
     
     abstract int setAge();
@@ -109,4 +72,7 @@ public abstract class Predator extends Animal
     abstract int getMaxLitterSize();
 
     abstract int getFoodValue();
+    
+    abstract Location findFood();
+    
 }

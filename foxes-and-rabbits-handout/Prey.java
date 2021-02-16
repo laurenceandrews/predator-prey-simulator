@@ -23,7 +23,7 @@ public abstract class Prey extends Animal
      */
     public Prey(boolean randomAge, Field field, Location location)
     {
-        super(field, location);
+        super(randomAge, field, location);
         fear = 0;
     }
 

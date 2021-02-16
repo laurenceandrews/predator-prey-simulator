@@ -1,6 +1,7 @@
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Iterator; 
 
 /**
  * A class representing shared characteristics of animals.
@@ -214,6 +215,11 @@ public abstract class Animal
         return young;
     }
     
+    private Animal checkAnimalType(Animal animal)
+    {
+        
+    }
+    
     protected void incrementAge()
     {
         age++;
@@ -238,7 +244,36 @@ public abstract class Animal
 
     abstract int getMaxLitterSize();
 
-    abstract int getFoodValue();
+    abstract int getFoodValue(); 
+    
+    protected Location findFood()
+    {
+        Field field = getField();
+        List<Location> adjacent = field.adjacentLocations(getLocation());
+        Iterator<Location> it = adjacent.iterator();
+        while(it.hasNext()) {
+            Location where = it.next();
+            Object animal = field.getObjectAt(where);
+            if(animal instanceof Scorpion) {
+                Scorpion scorpion = (Scorpion) animal;
+                if(scorpion.isAlive()) { 
+                    scorpion.setDead();
+                    getFoodValue();
+                    return where;
+                }
+            }
+
+            else if(animal instanceof Snake) {
+                Snake snake = (Snake) animal;
+                if(snake.isAlive()) { 
+                    snake.setDead();
+                    getFoodValue();
+                    return where;
+                }
+            }
+        }
+        return null;
+    }
 
     protected void setRandomAge(boolean randomAge) {
         if(randomAge) {
@@ -250,4 +285,7 @@ public abstract class Animal
             foodLevel = getFoodValue();
         }
     }
+    
+    
+    
 }

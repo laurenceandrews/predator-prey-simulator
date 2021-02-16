@@ -188,18 +188,32 @@ public abstract class Animal
         List<Location> free = field.getFreeAdjacentLocations(getLocation());
         int births = breed();
 
-        //Animal animal = newAnimal.get(0);
-        //Class<?> animalType = animal.getClass();
+        Animal animal = newAnimal.get(0);
 
-        if (mateNearby(newAnimal.get(0))) {
+        if (mateNearby(animal)) {
             for(int b = 0; b < births && free.size() > 0; b++) {
-                Location loc = free.remove(0);                
-                Animal young = new Eagle(false, field, loc);
-                newAnimal.add(young);
+                Location loc = free.remove(0);       
+                newAnimal.add(createYoung(animal, loc));
             }
         }
     }
 
+    private Animal createYoung(Animal animal, Location loc) {
+        Animal young;
+        if (animal instanceof Eagle) {
+            young = new Eagle(false, field, loc);
+        } else if (animal instanceof Scorpion) {
+            young = new Scorpion(false, field, loc);
+        } else if (animal instanceof Snake) {
+            young = new Snake(false, field, loc);
+        } else if (animal instanceof Mouse) {
+            young = new Mouse(false, field, loc);
+        } else if (animal instanceof Cricket) {
+            young = new Cricket(false, field, loc);
+        }
+        return young;
+    }
+    
     protected void incrementAge()
     {
         age++;

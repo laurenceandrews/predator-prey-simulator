@@ -21,13 +21,13 @@ public class Simulator
     // The probability that a fox will be created in any given grid position.
     private static final double EAGLE_CREATION_PROBABILITY = 0.02;
     // The probability that a rabbit will be created in any given grid position.
-    private static final double SCORPION_CREATION_PROBABILITY = 0.04; 
+    private static final double SCORPION_CREATION_PROBABILITY = 0.02; 
 
-    private static final double SNAKE_CREATION_PROBABILITY = 0.06; 
+    private static final double SNAKE_CREATION_PROBABILITY = 0.02; 
 
-    private static final double MOUSE_CREATION_PROBABILITY = 0.08; 
+    private static final double MOUSE_CREATION_PROBABILITY = 0.02; 
 
-    private static final double CRICKET_CREATION_PROBABILITY = 0.1;
+    private static final double CRICKET_CREATION_PROBABILITY = 0.04;
 
     // List of animals in the field.
     private List<Animal> animals;
@@ -65,11 +65,11 @@ public class Simulator
 
         // Create a view of the state of each location in the field.
         view = new SimulatorView(depth, width);
-        view.setColor(Cricket.class, Color.RED);
-        view.setColor(Mouse.class, Color.ORANGE);
+        view.setColor(Cricket.class, Color.BLUE);
+        view.setColor(Mouse.class, Color.GREEN);
         view.setColor(Scorpion.class, Color.YELLOW);
-        view.setColor(Snake.class, Color.GREEN);
-        view.setColor(Eagle.class, Color.BLUE);
+        view.setColor(Snake.class, Color.ORANGE);
+        view.setColor(Eagle.class, Color.RED);
 
         // Setup a valid starting point.
         reset();
@@ -81,7 +81,7 @@ public class Simulator
      */
     public void runLongSimulation()
     {
-        simulate(4000);
+        simulate(1000);
     }
 
     /**
@@ -149,8 +149,7 @@ public class Simulator
                     Location location = new Location(row, col);
                     Eagle eagle = new Eagle(true, field, location);
                     animals.add(eagle);
-                }
-                else if(rand.nextDouble() <= SCORPION_CREATION_PROBABILITY) {
+                } else if(rand.nextDouble() <= SCORPION_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
                     Scorpion scorpion = new Scorpion(true, field, location);
                     animals.add(scorpion);

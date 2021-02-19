@@ -18,11 +18,7 @@ public abstract class Animal
     // The animal's position in the field.
     private Location location;
 
-    private int age;
-
     private boolean isMale;
-
-    private int foodLevel;
 
     private List<Location> freeAdjacentLocations;
 
@@ -31,7 +27,6 @@ public abstract class Animal
     private List<Object> nearbyPrey;
 
     private static final Random rand = Randomizer.getRandom();
-
     /**
      * Create a new animal at location in field.
      * 
@@ -43,38 +38,14 @@ public abstract class Animal
         alive = true;
         this.field = field;
         setLocation(location);
-        setRandomAge(randomAge);
+        setInitialState(randomAge);
 
         freeAdjacentLocations = new ArrayList<>();
         nearbyPredators = new ArrayList<Object>();
         nearbyPrey = new ArrayList<Object>();
     }
 
-    /**
-     * Make this animal act - that is: make it do
-     * whatever it wants/needs to do.
-     * @param newAnimals A list to receive newly born animals.
-     */
-    protected void act(List<Animal> newAnimals) {
-        incrementHunger();
-        if(isAlive()) {
-            giveBirth(newAnimals);           
-            // Move towards a source of food if found.
-            Location newLocation = findFood();
-            if(newLocation == null) { 
-                // No food found - try to move to a free location.
-                newLocation = getField().freeAdjacentLocation(getLocation());
-            }
-            // See if it was possible to move.
-            if(newLocation != null) {
-                setLocation(newLocation);
-            }
-            else {
-                // Overcrowding.
-                setDead();
-            }
-        }
-    }
+    abstract public void act(List<Animal> newAnimals);
 
     /**
      * Check whether the animal is alive or not.
@@ -154,17 +125,6 @@ public abstract class Animal
         return isMale;
     }
 
-    /**
-     * Make this fox more hungry. This could result in the fox's death.
-     */
-    private void incrementHunger()
-    {
-        foodLevel--;
-        if(foodLevel <= 0) {
-            setDead();
-        }
-    }
-
     boolean mateNearby(Animal animalClass)
     {      
         for (int i = 0; i < getField().adjacentLocations(getLocation()).size(); i++) {
@@ -235,20 +195,12 @@ public abstract class Animal
         return young;
     }
 
-    protected void incrementAge()
-    {
-        age++;
-        if(age > getMaxAge()) {
-            setDead();
-        }
-    }
-
     /**
      * A fox can breed if it has reached the breeding age.
      */
     protected boolean canBreed()
     {
-        return age >= getBreedingAge();
+        return getAge() >= getBreedingAge();
     }
 
     abstract int getBreedingAge();
@@ -260,44 +212,21 @@ public abstract class Animal
     abstract int getMaxLitterSize();
 
     abstract int getFoodValue(); 
+    
+    abstract int getAge();
+    
+    abstract void setAge(int age);
+    
+    abstract void setFoodLevel(int foodValue);
 
-    protected Location findFood()
-    {
-        Field field = getField();
-        List<Location> adjacent = field.adjacentLocations(getLocation());
-        Iterator<Location> it = adjacent.iterator();
-        while(it.hasNext()) {
-            Location where = it.next();
-            Object animal = field.getObjectAt(where);
-            if(animal instanceof Scorpion) {
-                Scorpion scorpion = (Scorpion) animal;
-                if(scorpion.isAlive()) { 
-                    scorpion.setDead();
-                    getFoodValue();
-                    return where;
-                }
-            }
-
-            else if(animal instanceof Snake) {
-                Snake snake = (Snake) animal;
-                if(snake.isAlive()) { 
-                    snake.setDead();
-                    getFoodValue();
-                    return where;
-                }
-            }
-        }
-        return null;
-    }
-
-    protected void setRandomAge(boolean randomAge) {
+    protected void setInitialState(boolean randomAge) {
         if(randomAge) {
-            age = rand.nextInt(getMaxAge());
-            foodLevel = rand.nextInt(getFoodValue());
+            setAge(rand.nextInt(getMaxAge()));
+            setFoodLevel(rand.nextInt(getFoodValue()));
         }
         else {
-            age = 0;
-            foodLevel = getFoodValue();
+            setAge(0);
+            setFoodLevel(getFoodValue());
         }
     }
 }

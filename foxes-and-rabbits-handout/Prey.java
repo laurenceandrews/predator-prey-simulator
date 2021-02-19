@@ -52,4 +52,6 @@ public abstract class Prey extends Animal
     abstract int getMaxLitterSize();
 
     abstract int getFoodValue();
+    
+    abstract boolean getIsNocturnal();
 }

@@ -15,14 +15,15 @@ public class Mouse extends Prey
     // The age at which a fox can start to breed.
     private static final int BREEDING_AGE = 1;
     // The age to which a fox can live.
-    private static final int MAX_AGE = 40;
+    private static final int MAX_AGE = 10;
     // The likelihood of a fox breeding.
-    private static final double BREEDING_PROBABILITY = 0.1;
+    private static final double BREEDING_PROBABILITY = 0.08;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 10;
+    private static final int MAX_LITTER_SIZE = 5;
     // The food value of a single rabbit. In effect, this is the
     // number of steps a fox can go before it has to eat again.
-    private static final int FOOD_VALUE = 10;
+    private static final int FOOD_VALUE = 5;
+    private static final boolean IS_NOCTURNAL = true;
 
     // Individual characteristics (instance fields).
     // The fox's age.
@@ -86,6 +87,11 @@ public class Mouse extends Prey
             Mouse young = new Mouse(false, field, loc);
             newMice.add(young);
         }
+    }
+
+    @Override
+    protected boolean getIsNocturnal() {
+        return IS_NOCTURNAL;
     }
 
     protected Location findFood()
@@ -171,7 +177,7 @@ public class Mouse extends Prey
     {
         this.age = age;
     }
-    
+
     @Override
     protected void setFoodLevel(int foodValue) {
         this.foodLevel = foodValue;

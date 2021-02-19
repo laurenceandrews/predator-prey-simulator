@@ -15,14 +15,16 @@ public class Cricket extends Prey
     // The age at which a fox can start to breed.
     private static final int BREEDING_AGE = 1;
     // The age to which a fox can live.
-    private static final int MAX_AGE = 20;
+    private static final int MAX_AGE = 10;
     // The likelihood of a fox breeding.
     private static final double BREEDING_PROBABILITY = 0.1;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 15;
+    private static final int MAX_LITTER_SIZE = 20;
     // The food value of a single rabbit. In effect, this is the
     // number of steps a fox can go before it has to eat again.
-    private static final int FOOD_VALUE = 10;
+    private static final int FOOD_VALUE = 3;
+    
+    private static final boolean IS_NOCTURNAL = true;
 
     // Individual characteristics (instance fields).
     // The fox's age.
@@ -51,12 +53,7 @@ public class Cricket extends Prey
     public void act(List<Animal> newCrickets) {
         if(isAlive()) {
             giveBirth(newCrickets);            
-            // Move towards a source of food if found.
-            Location newLocation = findFood();
-            if(newLocation == null) { 
-                // No food found - try to move to a free location.
-                newLocation = getField().freeAdjacentLocation(getLocation());
-            }
+            Location newLocation = getField().freeAdjacentLocation(getLocation());
             // See if it was possible to move.
             if(newLocation != null) {
                 setLocation(newLocation);
@@ -88,23 +85,13 @@ public class Cricket extends Prey
         }
     }
 
+    @Override
+    protected boolean getIsNocturnal() {
+        return IS_NOCTURNAL;
+    }
+
     protected Location findFood()
     {
-        Field field = getField();
-        List<Location> adjacent = field.adjacentLocations(getLocation());
-        Iterator<Location> it = adjacent.iterator();
-        while(it.hasNext()) {
-            Location location = it.next();
-            Object meal = field.getObjectAt(location);
-            if(meal instanceof Mouse) {
-                Mouse mouse = (Mouse) meal;
-                if(mouse.isAlive()) { 
-                    mouse.setDead();
-                    foodLevel = mouse.getFoodValue();
-                    return location;
-                }
-            }
-        }
         return null;
     }
 
@@ -171,7 +158,7 @@ public class Cricket extends Prey
     {
         this.age = age;
     }
-    
+
     @Override
     protected void setFoodLevel(int foodValue) {
         this.foodLevel = foodValue;

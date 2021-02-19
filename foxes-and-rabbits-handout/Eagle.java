@@ -14,19 +14,20 @@ public class Eagle extends Predator
     // Characteristics shared by all foxes (class variables).
 
     // The age at which a fox can start to breed.
-    private static final int BREEDING_AGE = 4;
+    private static final int BREEDING_AGE = 3;
     // The age to which a fox can live.
-    private static final int MAX_AGE = 150;
+    private static final int MAX_AGE = 50;
     // The likelihood of a fox breeding.
-    private static final double BREEDING_PROBABILITY = 0.1;
+    private static final double BREEDING_PROBABILITY = 0.02;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 5;
+    private static final int MAX_LITTER_SIZE = 4;
     // The food value of a single rabbit. In effect, this is the
     // number of steps a fox can go before it has to eat again.
-    private static final int FOOD_VALUE = 10;
+    private static final int FOOD_VALUE = 20;
+
+    private static final boolean IS_NOCTURNAL = false;
 
     private static final Random rand = Randomizer.getRandom();
-
     // Individual characteristics (instance fields).
     // The fox's age.
     private int age;
@@ -65,8 +66,7 @@ public class Eagle extends Predator
             // See if it was possible to move.
             if(newLocation != null) {
                 setLocation(newLocation);
-            }
-            else {
+            } else {
                 // Overcrowding.
                 setDead();
             }
@@ -93,6 +93,11 @@ public class Eagle extends Predator
         }
     }
 
+    @Override
+    protected boolean getIsNocturnal() {
+        return IS_NOCTURNAL;
+    }
+
     protected Location findFood()
     {
         Field field = getField();
@@ -108,18 +113,11 @@ public class Eagle extends Predator
                     foodLevel = snake.getFoodValue();
                     return location;
                 }
-            } else if(object instanceof Scorpion) {
+            } else if (object instanceof Scorpion) {
                 Scorpion scorpion = (Scorpion) object;
                 if(scorpion.isAlive()) { 
                     scorpion.setDead();
                     foodLevel = scorpion.getFoodValue();
-                    return location;
-                }
-            } else if(object instanceof Mouse) {
-                Mouse mouse = (Mouse) object;
-                if(mouse.isAlive()) { 
-                    mouse.setDead();
-                    foodLevel = mouse.getFoodValue();
                     return location;
                 }
             }
@@ -190,7 +188,7 @@ public class Eagle extends Predator
     {
         this.age = age;
     }
-    
+
     @Override
     protected void setFoodLevel(int foodValue) {
         this.foodLevel = foodValue;

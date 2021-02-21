@@ -141,9 +141,6 @@ public abstract class Animal extends Actor
         return field;
     }
 
-    @Override
-    protected 
-
     abstract int getBreedingAge();
 
     abstract int getMaxAge();

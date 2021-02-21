@@ -14,16 +14,16 @@ public class Eagle extends Predator
     // Characteristics shared by all foxes (class variables).
 
     // The age at which a fox can start to breed.
-    private static final int BREEDING_AGE = 3;
+    private static final int BREEDING_AGE = 25;
     // The age to which a fox can live.
-    private static final int MAX_AGE = 50;
+    private static final int MAX_AGE = 250;
     // The likelihood of a fox breeding.
     private static final double BREEDING_PROBABILITY = 0.02;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 4;
+    private static final int MAX_LITTER_SIZE = 3;
     // The food value of a single rabbit. In effect, this is the
     // number of steps a fox can go before it has to eat again.
-    private static final int FOOD_VALUE = 20;
+    private static final int FOOD_VALUE = 45;
 
     private static final boolean IS_NOCTURNAL = false;
 
@@ -118,6 +118,13 @@ public class Eagle extends Predator
                 if(scorpion.isAlive()) { 
                     scorpion.setDead();
                     foodLevel = scorpion.getFoodValue();
+                    return location;
+                }
+            } else if (object instanceof Mouse) {
+                Mouse mouse = (Mouse) object;
+                if(mouse.isAlive()) { 
+                    mouse.setDead();
+                    foodLevel = mouse.getFoodValue();
                     return location;
                 }
             }

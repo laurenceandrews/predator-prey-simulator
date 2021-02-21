@@ -19,18 +19,18 @@ public class Simulator
     // The default depth of the grid.
     private static final int DEFAULT_DEPTH = 80;
     // The probability that a fox will be created in any given grid position.
-    private static final double EAGLE_CREATION_PROBABILITY = 0.02;
+    private static final double EAGLE_CREATION_PROBABILITY = 0.01;
     // The probability that a rabbit will be created in any given grid position.
-    private static final double SCORPION_CREATION_PROBABILITY = 0.04; 
+    private static final double SCORPION_CREATION_PROBABILITY = 0.02; 
 
-    private static final double SNAKE_CREATION_PROBABILITY = 0.06; 
+    private static final double SNAKE_CREATION_PROBABILITY = 0.04; 
 
-    private static final double MOUSE_CREATION_PROBABILITY = 0.08; 
+    private static final double MOUSE_CREATION_PROBABILITY = 0.07; 
 
     private static final double CRICKET_CREATION_PROBABILITY = 0.1;
 
     // List of animals in the field.
-    private List<Actor> actors;
+    private List<Animal> animals;
     // The current state of the field.
     private Field field;
     // The current step of the simulation.
@@ -62,15 +62,15 @@ public class Simulator
             width = DEFAULT_WIDTH;
         }
 
-        actors = new ArrayList<>();
+        animals = new ArrayList<>();
         field = new Field(depth, width);
 
         // Create a view of the state of each location in the field.
         view = new SimulatorView(depth, width);
-        view.setColor(Cricket.class, Color.BLUE);
-        view.setColor(Mouse.class, Color.GREEN);
-        view.setColor(Scorpion.class, Color.YELLOW);
-        view.setColor(Snake.class, Color.ORANGE);
+        view.setColor(Cricket.class, Color.GREEN);
+        view.setColor(Mouse.class, Color.BLUE);
+        view.setColor(Scorpion.class, Color.ORANGE);
+        view.setColor(Snake.class, Color.MAGENTA);
         view.setColor(Eagle.class, Color.RED);
 
         // Setup a valid starting point.
@@ -83,7 +83,7 @@ public class Simulator
      */
     public void runLongSimulation()
     {
-        simulate(1000);
+        simulate(4000);
     }
 
     /**
@@ -100,7 +100,7 @@ public class Simulator
                 setDay(false);
             }
             simulateOneStep();
-            // delay(60);   // uncomment this to run more slowly
+            //delay(60);   // uncomment this to run more slowly
         }
     }
 
@@ -118,25 +118,25 @@ public class Simulator
         step++;
 
         // Provide space for newborn animals.
-        List<Actor> newActors = new ArrayList<>();
-        for(Iterator<Actor> it = actors.iterator(); it.hasNext(); ) {
-            Actor actor = it.next();
+        List<Animal> newAnimals = new ArrayList<>();
+        for(Iterator<Animal> it = animals.iterator(); it.hasNext(); ) {
+            Animal animal = it.next();
             if (!isDay) {
-                if (actor.getIsNocturnal()) {
-                    actor.act(newActors);
+                if (animal.getIsNocturnal()) {
+                    animal.act(newAnimals);
                 }
             } else {
-                if (!actor.getIsNocturnal()) {
-                    actor.act(newActors);
+                if (!animal.getIsNocturnal()) {
+                    animal.act(newAnimals);
                 }
             }
-            if(! actor.isAlive()) {
+            if(! animal.isAlive()) {
                 it.remove();
             }
         }
 
         // Add the newly born foxes and rabbits to the main lists.
-        actors.addAll(newActors);
+        animals.addAll(newAnimals);
 
         view.showStatus(step, field);
     }
@@ -147,7 +147,7 @@ public class Simulator
     public void reset()
     {
         step = 0;
-        actors.clear();
+        animals.clear();
         populate();
 
         // Show the starting state in the view.
@@ -166,26 +166,26 @@ public class Simulator
                 if(rand.nextDouble() <= EAGLE_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
                     Eagle eagle = new Eagle(true, field, location);
-                    actors.add(eagle);
+                    animals.add(eagle);
                 } else if(rand.nextDouble() <= SCORPION_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
                     Scorpion scorpion = new Scorpion(true, field, location);
-                    actors.add(scorpion);
+                    animals.add(scorpion);
                     // else leave the location empty.
                 } else if(rand.nextDouble() <= SNAKE_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
                     Snake snake = new Snake(true, field, location);
-                    actors.add(snake);
+                    animals.add(snake);
                     // else leave the location empty.
                 } else if(rand.nextDouble() <= MOUSE_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
                     Mouse mouse = new Mouse(true, field, location);
-                    actors.add(mouse);
+                    animals.add(mouse);
                     // else leave the location empty.
                 } else if(rand.nextDouble() <= CRICKET_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
                     Cricket cricket = new Cricket(true, field, location);
-                    actors.add(cricket);
+                    animals.add(cricket);
                     // else leave the location empty.
                 }
             }

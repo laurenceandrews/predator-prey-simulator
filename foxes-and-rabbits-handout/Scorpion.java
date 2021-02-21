@@ -1,5 +1,6 @@
 import java.util.List;
 import java.util.Iterator;
+import java.util.Random;
 
 /**
  * A simple model of a fox.
@@ -13,19 +14,20 @@ public class Scorpion extends Predator
     // Characteristics shared by all foxes (class variables).
 
     // The age at which a fox can start to breed.
-    private static final int BREEDING_AGE = 2;
+    private static final int BREEDING_AGE = 12;
     // The age to which a fox can live.
-    private static final int MAX_AGE = 10;
+    private static final int MAX_AGE = 150;
     // The likelihood of a fox breeding.
-    private static final double BREEDING_PROBABILITY = 0.03;
+    private static final double BREEDING_PROBABILITY = 0.05;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 5;
+    private static final int MAX_LITTER_SIZE = 3;
     // The food value of a single rabbit. In effect, this is the
     // number of steps a fox can go before it has to eat again.
-    private static final int FOOD_VALUE = 5;
-    
+    private static final int FOOD_VALUE = 20;
+
     private static final boolean IS_NOCTURNAL = true;
 
+    private static final Random rand = Randomizer.getRandom();
     // Individual characteristics (instance fields).
     // The fox's age.
     private int age;
@@ -51,6 +53,8 @@ public class Scorpion extends Predator
      * @param newAnimals A list to receive newly born animals.
      */
     public void act(List<Animal> newScorpions) {
+        incrementAge();
+        incrementHunger();
         if(isAlive()) {
             giveBirth(newScorpions);            
             // Move towards a source of food if found.

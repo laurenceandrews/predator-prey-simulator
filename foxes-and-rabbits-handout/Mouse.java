@@ -14,19 +14,19 @@ public class Mouse extends Prey
     // Characteristics shared by all foxes (class variables).
 
     // The age at which a fox can start to breed.
-    private static final int BREEDING_AGE = 3;
+    private static final int BREEDING_AGE = 8;
     // The age to which a fox can live.
-    private static final int MAX_AGE = 80;
+    private static final int MAX_AGE = 40;
     // The likelihood of a fox breeding.
     private static final double BREEDING_PROBABILITY = 0.09;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 6;
+    private static final int MAX_LITTER_SIZE = 4;
     // The food value of a single rabbit. In effect, this is the
     // number of steps a fox can go before it has to eat again.
-    private static final int FOOD_VALUE = 10;
-    
+    private static final int FOOD_VALUE = 30;
+
     private static final boolean IS_NOCTURNAL = true;
-    
+
     private static final Random rand = Randomizer.getRandom();
     // Individual characteristics (instance fields).
     // The fox's age.
@@ -45,6 +45,7 @@ public class Mouse extends Prey
     public Mouse(boolean randomAge, Field field, Location location)
     {    
         super(randomAge, field, location);
+        this.foodLevel = FOOD_VALUE;
     }
 
     /**
@@ -52,11 +53,11 @@ public class Mouse extends Prey
      * whatever it wants/needs to do.
      * @param newAnimals A list to receive newly born animals.
      */
-    public void act(List<Animal> newMice) {
+    public void act(List<Actor> newActors) {
         incrementAge();
         incrementHunger();
         if(isAlive()) {
-            giveBirth(newMice);            
+            giveBirth(newActors);            
             // Move towards a source of food if found.
             Location newLocation = findFood();
             if(newLocation == null) { 
@@ -66,8 +67,7 @@ public class Mouse extends Prey
             // See if it was possible to move.
             if(newLocation != null) {
                 setLocation(newLocation);
-            }
-            else {
+            } else {
                 // Overcrowding.
                 setDead();
             }
@@ -80,7 +80,7 @@ public class Mouse extends Prey
      * @param newFoxes A list to return newly born foxes.
      */
     @Override
-    protected void giveBirth(List<Animal> newMice)
+    protected void giveBirth(List<Actor> newActors)
     {
         // New foxes are born into adjacent locations.
         // Get a list of adjacent free locations.
@@ -90,12 +90,12 @@ public class Mouse extends Prey
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
             Mouse young = new Mouse(false, field, loc);
-            newMice.add(young);
+            newActors.add(young);
         }
     }
 
     @Override
-    protected boolean getIsNocturnal() {
+    public boolean getIsNocturnal() {
         return IS_NOCTURNAL;
     }
 
@@ -106,12 +106,12 @@ public class Mouse extends Prey
         Iterator<Location> it = adjacent.iterator();
         while(it.hasNext()) {
             Location location = it.next();
-            Object meal = field.getObjectAt(location);
-            if(meal instanceof Cricket) {
-                Cricket cricket = (Cricket) meal;
-                if(cricket.isAlive()) { 
-                    cricket.setDead();
-                    foodLevel = cricket.getFoodValue();
+            Object object = field.getObjectAt(location);
+            if(object instanceof Plant) {
+                Plant plant = (Plant) object;
+                if(plant.isAlive()) { 
+                    plant.setDead();
+                    foodLevel = plant.getFoodValue();
                     return location;
                 }
             }

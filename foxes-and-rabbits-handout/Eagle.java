@@ -45,6 +45,7 @@ public class Eagle extends Predator
     public Eagle(boolean randomAge, Field field, Location location)
     {    
         super(randomAge, field, location);
+        this.foodLevel = FOOD_VALUE;
     }
 
     /**
@@ -52,11 +53,11 @@ public class Eagle extends Predator
      * whatever it wants/needs to do.
      * @param newAnimals A list to receive newly born animals.
      */
-    public void act(List<Animal> newEagles) {
+    public void act(List<Actor> newActors) {
         incrementAge();
         incrementHunger();
         if(isAlive()) {
-            giveBirth(newEagles);            
+            giveBirth(newActors);            
             // Move towards a source of food if found.
             Location newLocation = findFood();
             if(newLocation == null) { 
@@ -79,7 +80,7 @@ public class Eagle extends Predator
      * @param newFoxes A list to return newly born foxes.
      */
     @Override
-    protected void giveBirth(List<Animal> newEagles)
+    protected void giveBirth(List<Actor> newActors)
     {
         // New foxes are born into adjacent locations.
         // Get a list of adjacent free locations.
@@ -89,12 +90,12 @@ public class Eagle extends Predator
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
             Eagle young = new Eagle(false, field, loc);
-            newEagles.add(young);
+            newActors.add(young);
         }
     }
 
     @Override
-    protected boolean getIsNocturnal() {
+    public boolean getIsNocturnal() {
         return IS_NOCTURNAL;
     }
 

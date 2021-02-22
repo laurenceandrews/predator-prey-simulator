@@ -14,16 +14,16 @@ public class Cricket extends Prey
     // Characteristics shared by all foxes (class variables).
 
     // The age at which a fox can start to breed.
-    private static final int BREEDING_AGE = 5;
+    private static final int BREEDING_AGE = 7;
     // The age to which a fox can live.
-    private static final int MAX_AGE = 40;
+    private static final int MAX_AGE = 20;
     // The likelihood of a fox breeding.
-    private static final double BREEDING_PROBABILITY = 0.1;
+    private static final double BREEDING_PROBABILITY = 0.08;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 8;
+    private static final int MAX_LITTER_SIZE = 5;
     // The food value of a single rabbit. In effect, this is the
     // number of steps a fox can go before it has to eat again.
-    private static final int FOOD_VALUE = 5;
+    private static final int FOOD_VALUE = 10;
 
     private static final boolean IS_NOCTURNAL = true;
 
@@ -45,23 +45,25 @@ public class Cricket extends Prey
     public Cricket(boolean randomAge, Field field, Location location)
     {    
         super(randomAge, field, location);
+        this.foodLevel = FOOD_VALUE;
     }
 
-    /**
-     * Make this animal act - that is: make it do
-     * whatever it wants/needs to do.
-     * @param newAnimals A list to receive newly born animals.
-     */
-    public void act(List<Animal> newCrickets) {
+    @Override
+    public void act(List<Actor> newActors) {
         incrementAge();
+        incrementHunger();
         if(isAlive()) {
-            giveBirth(newCrickets);            
-            Location newLocation = getField().freeAdjacentLocation(getLocation());
+            giveBirth(newActors);            
+            // Move towards a source of food if found.
+            Location newLocation = findFood();
+            if(newLocation == null) { 
+                // No food found - try to move to a free location.
+                newLocation = getField().freeAdjacentLocation(getLocation());
+            }
             // See if it was possible to move.
             if(newLocation != null) {
                 setLocation(newLocation);
-            }
-            else {
+            } else {
                 // Overcrowding.
                 setDead();
             }
@@ -74,7 +76,7 @@ public class Cricket extends Prey
      * @param newFoxes A list to return newly born foxes.
      */
     @Override
-    protected void giveBirth(List<Animal> newCrickets)
+    protected void giveBirth(List<Actor> newActors)
     {
         // New foxes are born into adjacent locations.
         // Get a list of adjacent free locations.
@@ -84,17 +86,32 @@ public class Cricket extends Prey
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
             Cricket young = new Cricket(false, field, loc);
-            newCrickets.add(young);
+            newActors.add(young);
         }
     }
 
     @Override
-    protected boolean getIsNocturnal() {
+    public boolean getIsNocturnal() {
         return IS_NOCTURNAL;
     }
 
     protected Location findFood()
     {
+        Field field = getField();
+        List<Location> adjacent = field.adjacentLocations(getLocation());
+        Iterator<Location> it = adjacent.iterator();
+        while(it.hasNext()) {
+            Location location = it.next();
+            Object object = field.getObjectAt(location);
+            if(object instanceof Plant) {
+                Plant plant = (Plant) object;
+                if(plant.isAlive()) { 
+                    plant.setDead();
+                    foodLevel = plant.getFoodValue();
+                    return location;
+                }
+            }
+        }
         return null;
     }
 

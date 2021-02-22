@@ -14,7 +14,7 @@ public class Scorpion extends Predator
     // Characteristics shared by all foxes (class variables).
 
     // The age at which a fox can start to breed.
-    private static final int BREEDING_AGE = 12;
+    private static final int BREEDING_AGE = 15;
     // The age to which a fox can live.
     private static final int MAX_AGE = 150;
     // The likelihood of a fox breeding.
@@ -45,6 +45,7 @@ public class Scorpion extends Predator
     public Scorpion(boolean randomAge, Field field, Location location)
     {    
         super(randomAge, field, location);
+        this.foodLevel = FOOD_VALUE;
     }
 
     /**
@@ -52,11 +53,11 @@ public class Scorpion extends Predator
      * whatever it wants/needs to do.
      * @param newAnimals A list to receive newly born animals.
      */
-    public void act(List<Animal> newScorpions) {
+    public void act(List<Actor> newActors) {
         incrementAge();
         incrementHunger();
         if(isAlive()) {
-            giveBirth(newScorpions);            
+            giveBirth(newActors);            
             // Move towards a source of food if found.
             Location newLocation = findFood();
             if(newLocation == null) { 
@@ -80,7 +81,7 @@ public class Scorpion extends Predator
      * @param newFoxes A list to return newly born foxes.
      */
     @Override
-    protected void giveBirth(List<Animal> newScorpions)
+    protected void giveBirth(List<Actor> newActors)
     {
         // New foxes are born into adjacent locations.
         // Get a list of adjacent free locations.
@@ -90,12 +91,12 @@ public class Scorpion extends Predator
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
             Scorpion young = new Scorpion(false, field, loc);
-            newScorpions.add(young);
+            newActors.add(young);
         }
     }
 
     @Override
-    protected boolean getIsNocturnal() {
+    public boolean getIsNocturnal() {
         return IS_NOCTURNAL;
     }
 

@@ -39,5 +39,5 @@ public abstract class Predator extends Animal
 
     abstract int getAge();
 
-    abstract boolean getIsNocturnal();
+    abstract public boolean getIsNocturnal();
 }

@@ -68,9 +68,9 @@ public class SimulatorView extends JFrame
      * @param animalClass The animal's Class object.
      * @param color The color to be used for the given class.
      */
-    public void setColor(Class animalClass, Color color)
+    public void setColor(Class drawableClass, Color color)
     {
-        colors.put(animalClass, color);
+        colors.put(drawableClass, color);
     }
 
     /**
@@ -84,9 +84,9 @@ public class SimulatorView extends JFrame
     /**
      * @return The color to be used for a given class of animal.
      */
-    private Color getColor(Class animalClass)
+    private Color getColor(Class drawableClass)
     {
-        Color col = colors.get(animalClass);
+        Color col = colors.get(drawableClass);
         if(col == null) {
             // no color defined for this class
             return UNKNOWN_COLOR;
@@ -114,12 +114,11 @@ public class SimulatorView extends JFrame
 
         for(int row = 0; row < field.getDepth(); row++) {
             for(int col = 0; col < field.getWidth(); col++) {
-                Object animal = field.getObjectAt(row, col);
-                if(animal != null) {
-                    stats.incrementCount(animal.getClass());
-                    fieldView.drawMark(col, row, getColor(animal.getClass()));
-                }
-                else {
+                Object drawable = field.getObjectAt(row, col);
+                if(drawable != null) {
+                    stats.incrementCount(drawable.getClass());
+                    fieldView.drawMark(col, row, getColor(drawable.getClass()));
+                }  else {
                     fieldView.drawMark(col, row, EMPTY_COLOR);
                 }
             }

@@ -1,33 +1,11 @@
+import java.util.List;
 
-/**
- * Write a description of class Drawable here.
- *
- * @author (your name)
- * @version (a version number or a date)
- */
-public class Drawable
+public interface Drawable
 {
-    // instance variables - replace the example below with your own
-    private int x;
-
     /**
-     * Constructor for objects of class Drawable
+     * Perform the actor's regular behavior.
+     * @param newActors A list for storing newly created
+     * actors.
      */
-    public Drawable()
-    {
-        // initialise instance variables
-        x = 0;
-    }
-
-    /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
-     */
-    public int sampleMethod(int y)
-    {
-        // put your code here
-        return x + y;
-    }
+    void draw(List<Drawable> newDrawables);
 }

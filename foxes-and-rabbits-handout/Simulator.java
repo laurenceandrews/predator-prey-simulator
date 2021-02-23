@@ -39,6 +39,8 @@ public class Simulator
     // A graphical view of the simulation.
     private SimulatorView view;
 
+    private List<Drawable> drawables;
+
     private boolean isDay;
 
     /**
@@ -64,6 +66,8 @@ public class Simulator
         }
 
         actors = new ArrayList<>();
+        drawables = new ArrayList<>();
+
         field = new Field(depth, width);
 
         // Create a view of the state of each location in the field.
@@ -96,11 +100,6 @@ public class Simulator
     public void simulate(int numSteps)
     {
         for(int step = 1; step <= numSteps && view.isViable(field); step++) {
-            if (step % 2 == 0) {
-                setDay(true);
-            } else {
-                setDay(false);
-            }
             simulateOneStep();
             //delay(60);   // uncomment this to run more slowly
         }
@@ -108,6 +107,14 @@ public class Simulator
 
     public void setDay(boolean isDay) {
         this.isDay = isDay;
+    }
+
+    public void dayOrNight () {
+        if (step % 2 == 0) {
+            setDay(false);
+        } else {
+            setDay(true);
+        }
     }
 
     /**
@@ -118,29 +125,48 @@ public class Simulator
     public void simulateOneStep()
     {
         step++;
-
+        dayOrNight();
         // Provide space for newborn animals.
         List<Actor> newActors = new ArrayList<>();
+        
         for(Iterator<Actor> it = actors.iterator(); it.hasNext(); ) {
             Actor actor = it.next();
             if (!isDay) {
-                if (actor.getIsNocturnal()) {
-                    actor.act(newActors);
-                }
+                actNight(actor, newActors);
             } else {
-                if (!actor.getIsNocturnal()) {
-                    actor.act(newActors);
-                }
+                actDay(actor, newActors);
             }
             if(!actor.isAlive()) {
                 it.remove();
             }
         }
 
+        for(Iterator<Drawable> it = drawables.iterator(); it.hasNext(); ) {
+            Drawable drawable = it.next();
+            drawable.draw(drawables);
+        }
+
         // Add the newly born foxes and rabbits to the main lists.
         actors.addAll(newActors);
 
         view.showStatus(step, field);
+    }
+
+    public void actDay(Actor actor, List<Actor> newActors) {
+        if (actor.getIsNocturnal()) {
+            actor.act(newActors);
+        }
+
+        if (actor.isRaining()) {
+            actor.act(newActors);
+        }
+    }
+
+    public void actNight (Actor actor, List<Actor> newActors) {
+        if (!actor.getIsNocturnal()) {
+            actor.act(newActors);
+        }
+
     }
 
     /**

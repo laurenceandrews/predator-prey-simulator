@@ -8,7 +8,7 @@ import java.util.Random;
  * @author David J. Barnes and Michael Kölling
  * @version 2016.02.29 (2)
  */
-public class Plant implements Actor
+public class Plant implements Actor, Drawable
 
 {
     private static final Random rand = Randomizer.getRandom();
@@ -19,6 +19,8 @@ public class Plant implements Actor
     private Field field;
     // The animal's position in the field.
     private Location location;
+    
+    private boolean drawable;
 
     private List<Location> freeAdjacentLocations;
 
@@ -55,7 +57,7 @@ public class Plant implements Actor
             giveBirth(newActors);            
         }
     }
-
+    
     /**
      * Check whether the animal is alive or not.
      * @return true if the animal is still alive.

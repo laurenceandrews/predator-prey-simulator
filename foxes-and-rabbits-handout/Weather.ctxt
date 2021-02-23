@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=Weather
+comment0.text=\n\ A\ class\ representing\ shared\ characteristics\ of\ animals.\n\ \n\ @author\ David\ J.\ Barnes\ and\ Michael\ K\u00F6lling\n\ @version\ 2016.02.29\ (2)\n
+comment1.params=
+comment1.target=Weather()
+comment1.text=\n\ Create\ a\ new\ animal\ at\ location\ in\ field.\n\ \n\ @param\ field\ The\ field\ currently\ occupied.\n\ @param\ location\ The\ location\ within\ the\ field.\n
+comment2.params=newActors
+comment2.target=void\ act(java.util.List)
+comment3.params=
+comment3.target=Weather\ change()
+comment4.params=
+comment4.target=void\ reset()
+numComments=5

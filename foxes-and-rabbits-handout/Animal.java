@@ -8,7 +8,7 @@ import java.util.Random;
  * @author David J. Barnes and Michael Kölling
  * @version 2016.02.29 (2)
  */
-public abstract class Animal implements Actor
+public abstract class Animal implements Actor, Drawable
 
 {
     private static final Random rand = Randomizer.getRandom();
@@ -17,6 +17,8 @@ public abstract class Animal implements Actor
     private boolean alive;
 
     private boolean isMale;
+    
+    private boolean drawable;
 
     private static final double GENDER_PROBABILITY = 0.5;
 
@@ -62,6 +64,18 @@ public abstract class Animal implements Actor
     public boolean isAlive()
     {
         return alive;
+    }
+
+    @Override
+    public void draw(List<Drawable> newDrawables) {
+        if (isDrawable()) {
+            newDrawables.add(this);
+        }
+    }
+
+    @Override
+    public boolean isDrawable() {
+        return drawable;
     }
 
     /**

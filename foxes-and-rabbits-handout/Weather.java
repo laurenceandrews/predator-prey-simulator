@@ -21,7 +21,7 @@ public class Weather
 
     private static final double FOG_PROBABILITY = 0.1;
 
-    private static final double RAIN_PROBABILITY = 0.3;
+    private static final double RAIN_PROBABILITY = 0.5;
 
     private static final double SUN_PROBABILITY = 1;
     
@@ -34,12 +34,12 @@ public class Weather
      */
     public Weather()
     { 
-
+        weatherRecord = new Stack<String>();
+        weatherRecord.push("Sun");
     }
 
     public void setWeatherState()
     {
-        weatherRecord = new Stack<String>();
         rand = Randomizer.getRandom();
         stateProbability = rand.nextDouble();
         if (stateProbability < FOG_PROBABILITY) {

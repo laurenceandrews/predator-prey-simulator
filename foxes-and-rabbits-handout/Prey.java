@@ -54,4 +54,6 @@ public abstract class Prey extends Animal
     abstract int getFoodValue();
     
     abstract public boolean getIsNocturnal();
+    
+    abstract boolean mateNearby();
 }

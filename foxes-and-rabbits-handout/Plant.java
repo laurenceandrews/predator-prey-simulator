@@ -37,8 +37,6 @@ public class Plant implements Actor
     
     private int age;
     
-
-    
     /**
      * Create a new animal at location in field.
      * 

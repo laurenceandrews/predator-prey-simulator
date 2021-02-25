@@ -24,8 +24,10 @@ public class SimulatorView extends JFrame
 
     private final String STEP_PREFIX = "Step: ";
     private final String TOD_PREFIX = "Time: ";
+    private final String WEATHER_PREFIX = "Weather: ";
     private final String POPULATION_PREFIX = "Population: ";
-    private JLabel stepLabel, todLabel, population, infoLabel;
+    
+    private JLabel stepLabel, todLabel, weatherLabel, population, infoLabel;
     private FieldView fieldView;
     
     // A map for storing colors for participants in the simulation
@@ -46,6 +48,7 @@ public class SimulatorView extends JFrame
         setTitle("Predator-Prey Simulation");
         stepLabel = new JLabel(STEP_PREFIX, JLabel.CENTER);
         todLabel = new JLabel(TOD_PREFIX, JLabel.CENTER);
+        weatherLabel = new JLabel(WEATHER_PREFIX, JLabel.CENTER);
         infoLabel = new JLabel("  ", JLabel.CENTER);
         population = new JLabel(POPULATION_PREFIX, JLabel.CENTER);
         
@@ -58,6 +61,7 @@ public class SimulatorView extends JFrame
         JPanel infoPane = new JPanel(new BorderLayout());
             infoPane.add(stepLabel, BorderLayout.WEST);
             infoPane.add(todLabel, BorderLayout.EAST);
+            infoPane.add(weatherLabel, BorderLayout.NORTH);
             infoPane.add(infoLabel, BorderLayout.CENTER);
         contents.add(infoPane, BorderLayout.NORTH);
         contents.add(fieldView, BorderLayout.CENTER);
@@ -104,20 +108,28 @@ public class SimulatorView extends JFrame
      * @param step Which iteration step it is.
      * @param field The field whose status is to be displayed.
      */
-    public void showStatus(int step, Field field, boolean isDay)
+    public void showStatus(int step, Field field, int isDay, String currentWeather)
     {
         if(!isVisible()) {
             setVisible(true);
         }
             
         stepLabel.setText(STEP_PREFIX + step);
-        if (isDay) {
+        
+        if (isDay == 1) {
             todLabel.setText(TOD_PREFIX + "Day");
         }
-        else {
+        else if (isDay == -1) {
             todLabel.setText(TOD_PREFIX + "Night");
         }
+        else {
+            todLabel.setText(TOD_PREFIX + "TEMP");
+        }
+        
+        weatherLabel.setText(WEATHER_PREFIX + currentWeather);
+        
         stats.reset();
+        
         
         
         

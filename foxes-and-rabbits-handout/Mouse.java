@@ -89,11 +89,32 @@ public class Mouse extends Prey
         Field field = getField();
         List<Location> free = field.getFreeAdjacentLocations(getLocation());
         int births = breed();
-        for(int b = 0; b < births && free.size() > 0; b++) {
-            Location loc = free.remove(0);
-            Mouse young = new Mouse(false, field, loc);
-            newActors.add(young);
+        if (mateNearby()) {
+            for(int b = 0; b < births && free.size() > 0; b++) {
+                Location loc = free.remove(0);
+                Mouse young = new Mouse(false, field, loc);
+                newActors.add(young);
+            }
         }
+    }
+    
+    @Override
+    boolean mateNearby()
+    {   
+        Field field = getField();
+        List<Location> adjacent = field.adjacentLocations(getLocation());
+        Iterator<Location> it = adjacent.iterator();
+        while(it.hasNext()) {
+            Location location = it.next();
+            Object object = field.getObjectAt(location);
+            if(object instanceof Mouse && getIsMale()) {
+                Mouse mouse = (Mouse) object;
+                if(mouse.isAlive()) { 
+                    return true;  
+                }
+            }
+        }
+        return false;        
     }
 
     @Override

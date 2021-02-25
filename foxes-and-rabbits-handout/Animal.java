@@ -1,5 +1,6 @@
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -17,10 +18,16 @@ public abstract class Animal implements Actor
     private boolean alive;
 
     private boolean isMale;
-    
+
     private boolean drawable;
+    
+    private boolean isDiseased;
+    
+    private int diseaseCount;
 
     private static final double GENDER_PROBABILITY = 0.5;
+    
+    private static final double DISEASED_PROBABILITY = 0.05;
 
     // The animal's field.
     private Field field;
@@ -44,6 +51,7 @@ public abstract class Animal implements Actor
         alive = true;
         this.field = field;
         setLocation(location);
+        diseaseCount = 0;
 
         freeAdjacentLocations = new ArrayList<>();
         nearbyPredators = new ArrayList<Object>();
@@ -52,6 +60,11 @@ public abstract class Animal implements Actor
         int maleOrFemale = rand.nextInt(1);
         if (maleOrFemale < GENDER_PROBABILITY) {
             isMale = true;
+        }
+        
+        int diseasedOrHealthy = rand.nextInt(1);
+        if (diseasedOrHealthy < DISEASED_PROBABILITY) {
+            isDiseased = true;
         }
     }
 
@@ -143,15 +156,33 @@ public abstract class Animal implements Actor
 
     abstract void giveBirth(List<Actor> newActors);
 
-    boolean mateNearby(Animal animalClass)
-    {      
-        for (int i = 0; i < getField().adjacentLocations(getLocation()).size(); i++) {
-            if ((field.getObjectAt(field.adjacentLocations(getLocation()).get(i)) == animalClass) &&
-            (field.getObjectAt(field.adjacentLocations(getLocation()).get(i)) == animalClass) != getIsMale()) {
+    abstract boolean mateNearby();
+
+    boolean diseasedNearby()
+    {   
+        Field field = getField();
+        List<Location> adjacent = field.adjacentLocations(getLocation());
+        Iterator<Location> it = adjacent.iterator();
+        while(it.hasNext()) {
+            Location location = it.next();
+            Object object = field.getObjectAt(location);
+            if(object instanceof Animal && getIsDiseased()) {
                 return true;
             }
         }
-        return false;
+        return false;        
+    }
+    
+    @Override
+    public boolean getIsDiseased() {
+        return isDiseased;
+    }
+    
+    protected void setIsDiseased() {
+        int diseasedOrHealthy = rand.nextInt(1);
+        if (diseasedOrHealthy < DISEASED_PROBABILITY) {
+            isDiseased = true;
+        }
     }
 
     protected boolean getIsMale() {
@@ -197,4 +228,14 @@ public abstract class Animal implements Actor
     abstract void setFoodLevel(int foodValue);
 
     abstract public boolean getIsNocturnal();
+    
+    @Override
+    public int getDiseaseCount() {
+        return diseaseCount;
+    }
+    
+    @Override
+    public void incrementDiseaseCount() {
+        diseaseCount++;
+    }
 }

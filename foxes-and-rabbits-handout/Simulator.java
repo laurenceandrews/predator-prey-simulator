@@ -41,7 +41,9 @@ public class Simulator
 
     private Weather weather;
 
-    private boolean isDay;
+    private String currentWeather;
+
+    private int isDay;
 
     /**
      * Construct a simulation field with default size.
@@ -50,6 +52,9 @@ public class Simulator
     {
         this(DEFAULT_DEPTH, DEFAULT_WIDTH);
         weather = new Weather();
+
+        diseaseCount = 0;
+
     }
 
     /**
@@ -65,8 +70,11 @@ public class Simulator
             depth = DEFAULT_DEPTH;
             width = DEFAULT_WIDTH;
         }
+        weather = new Weather();
 
         actors = new ArrayList<>();
+
+        diseaseCount = 0;
 
         field = new Field(depth, width);
         // Create a view of the state of each location in the field.
@@ -113,38 +121,45 @@ public class Simulator
     {
         step++;
         dayOrNight();
-
         weather.setWeatherState();
+        currentWeather = weather.checkLastWeather();
+        plantRegrowth();
         // Provide space for newborn animals.
         List<Actor> newActors = new ArrayList<>();
 
+        fogStopAction();
+
         for(Iterator<Actor> it = actors.iterator(); it.hasNext(); ) {
             Actor actor = it.next();
-            if (!isDay) {
+            if (isDay == -1) {
                 actNight(actor, newActors);
-            } else {
+            } else if (isDay == 1) {
                 actDay(actor, newActors);
+            }
+            if (it.getDiseaseCount() == 3) {
+                it.remove();
             }
             if(!actor.isAlive()) {
                 it.remove();
             }
+            it.incrementDiseaseCount();
         }
 
         // Add the newly born foxes and rabbits to the main lists.
         actors.addAll(newActors);
 
-        view.showStatus(step, field, isDay);
+        view.showStatus(step, field, isDay, currentWeather);
     }
 
-    public void setDay(boolean isDay) {
+    public void setDay(int isDay) {
         this.isDay = isDay;
     }
 
     public void dayOrNight () {
         if (step % 2 == 0) {
-            setDay(false);
+            setDay(1);
         } else {
-            setDay(true);
+            setDay(-1);
         }
     }
 
@@ -164,11 +179,18 @@ public class Simulator
         }
     }
 
+    public void fogStopAction()
+    {
+        Random rand = Randomizer.getRandom();
+        if (weather.checkLastWeather().equals("Fog")) {
+            isDay = 0;
+        }
+    }
+
     public void actDay(Actor actor, List<Actor> newActors) {
         if (actor.getIsNocturnal()) {
             actor.act(newActors);
         }
-
     }
 
     public void actNight (Actor actor, List<Actor> newActors) {
@@ -187,7 +209,7 @@ public class Simulator
         populate();
 
         // Show the starting state in the view.
-        view.showStatus(step, field, isDay);
+        view.showStatus(step, field, isDay, currentWeather);
     }
 
     /**

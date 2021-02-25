@@ -89,11 +89,32 @@ public class Eagle extends Predator
         Field field = getField();
         List<Location> free = field.getFreeAdjacentLocations(getLocation());
         int births = breed();
-        for(int b = 0; b < births && free.size() > 0; b++) {
-            Location loc = free.remove(0);
-            Eagle young = new Eagle(false, field, loc);
-            newActors.add(young);
+        if (mateNearby()) {
+            for(int b = 0; b < births && free.size() > 0; b++) {
+                Location loc = free.remove(0);
+                Eagle young = new Eagle(false, field, loc);
+                newActors.add(young);
+            }
         }
+    }
+    
+    @Override
+    boolean mateNearby()
+    {   
+        Field field = getField();
+        List<Location> adjacent = field.adjacentLocations(getLocation());
+        Iterator<Location> it = adjacent.iterator();
+        while(it.hasNext()) {
+            Location location = it.next();
+            Object object = field.getObjectAt(location);
+            if(object instanceof Eagle && getIsMale()) {
+                Eagle eagle = (Eagle) object;
+                if(eagle.isAlive()) { 
+                    return true;  
+                }
+            }
+        }
+        return false;        
     }
 
     @Override

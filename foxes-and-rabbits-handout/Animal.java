@@ -8,7 +8,7 @@ import java.util.Random;
  * @author David J. Barnes and Michael Kölling
  * @version 2016.02.29 (2)
  */
-public abstract class Animal implements Actor, Drawable
+public abstract class Animal implements Actor
 
 {
     private static final Random rand = Randomizer.getRandom();
@@ -64,18 +64,6 @@ public abstract class Animal implements Actor, Drawable
     public boolean isAlive()
     {
         return alive;
-    }
-
-    @Override
-    public void draw(List<Drawable> newDrawables) {
-        if (isDrawable()) {
-            newDrawables.add(this);
-        }
-    }
-
-    @Override
-    public boolean isDrawable() {
-        return drawable;
     }
 
     /**

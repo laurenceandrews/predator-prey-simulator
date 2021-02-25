@@ -1,6 +1,0 @@
-#BlueJ class context
-comment0.target=Drawable
-comment1.params=newDrawables
-comment1.target=void\ draw(java.util.List)
-comment1.text=\n\ Perform\ the\ actor's\ regular\ behavior.\n\ @param\ newActors\ A\ list\ for\ storing\ newly\ created\n\ actors.\n
-numComments=2

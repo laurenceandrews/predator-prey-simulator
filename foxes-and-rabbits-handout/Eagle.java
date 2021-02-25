@@ -74,12 +74,7 @@ public class Eagle extends Predator
         }
     }
     
-    @Override
-    public void draw(List<Drawable> newDrawables) {
-        if (isDrawable()) {
-            newDrawables.add(this);
-        }
-    }
+    
 
     /**
      * Check whether or not this fox is to give birth at this step.

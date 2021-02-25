@@ -8,7 +8,7 @@ import java.util.Random;
  * @author David J. Barnes and Michael Kölling
  * @version 2016.02.29 (2)
  */
-public class Plant implements Actor, Drawable
+public class Plant implements Actor
 
 {
     private static final Random rand = Randomizer.getRandom();
@@ -34,7 +34,11 @@ public class Plant implements Actor, Drawable
     private static final int FOOD_VALUE = 10;
 
     private static final boolean IS_NOCTURNAL = true;
+    
     private int age;
+    
+
+    
     /**
      * Create a new animal at location in field.
      * 
@@ -49,6 +53,7 @@ public class Plant implements Actor, Drawable
 
         freeAdjacentLocations = new ArrayList<>();
     }
+    
 
     @Override
     public void act(List<Actor> newActors) {
@@ -67,6 +72,7 @@ public class Plant implements Actor, Drawable
     {
         return alive;
     }
+    
 
     /**
      * Indicate that the animal is no longer alive.

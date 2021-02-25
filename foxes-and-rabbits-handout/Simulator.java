@@ -39,7 +39,7 @@ public class Simulator
     // A graphical view of the simulation.
     private SimulatorView view;
 
-    private List<Drawable> drawables;
+    private Weather weather;
 
     private boolean isDay;
 
@@ -49,6 +49,7 @@ public class Simulator
     public Simulator()
     {
         this(DEFAULT_DEPTH, DEFAULT_WIDTH);
+        weather = new Weather();
     }
 
     /**
@@ -66,10 +67,8 @@ public class Simulator
         }
 
         actors = new ArrayList<>();
-        drawables = new ArrayList<>();
 
         field = new Field(depth, width);
-
         // Create a view of the state of each location in the field.
         view = new SimulatorView(depth, width);
         view.setColor(Plant.class, Color.GREEN);
@@ -105,18 +104,6 @@ public class Simulator
         }
     }
 
-    public void setDay(boolean isDay) {
-        this.isDay = isDay;
-    }
-
-    public void dayOrNight () {
-        if (step % 2 == 0) {
-            setDay(false);
-        } else {
-            setDay(true);
-        }
-    }
-
     /**
      * Run the simulation from its current state for a single step.
      * Iterate over the whole field updating the state of each
@@ -126,9 +113,11 @@ public class Simulator
     {
         step++;
         dayOrNight();
+
+        weather.setWeatherState();
         // Provide space for newborn animals.
         List<Actor> newActors = new ArrayList<>();
-        
+
         for(Iterator<Actor> it = actors.iterator(); it.hasNext(); ) {
             Actor actor = it.next();
             if (!isDay) {
@@ -141,15 +130,38 @@ public class Simulator
             }
         }
 
-        for(Iterator<Drawable> it = drawables.iterator(); it.hasNext(); ) {
-            Drawable drawable = it.next();
-            drawable.draw(drawables);
-        }
-
         // Add the newly born foxes and rabbits to the main lists.
         actors.addAll(newActors);
 
-        view.showStatus(step, field);
+        view.showStatus(step, field, isDay);
+    }
+
+    public void setDay(boolean isDay) {
+        this.isDay = isDay;
+    }
+
+    public void dayOrNight () {
+        if (step % 2 == 0) {
+            setDay(false);
+        } else {
+            setDay(true);
+        }
+    }
+
+    public void plantRegrowth()
+    {
+        Random rand = Randomizer.getRandom();
+        if (weather.twoDayReport().equals("RainSun")) {
+            for(int row = 0; row < field.getDepth(); row++) {
+                for(int col = 0; col < field.getWidth(); col++) {
+                    if(rand.nextDouble() <= PLANT_CREATION_PROBABILITY){ 
+                        Location location = new Location(row, col);
+                        Plant plant = new Plant(true, field, location);
+                        actors.add(plant);
+                    }
+                }
+            }
+        }
     }
 
     public void actDay(Actor actor, List<Actor> newActors) {
@@ -157,16 +169,12 @@ public class Simulator
             actor.act(newActors);
         }
 
-        if (actor.isRaining()) {
-            actor.act(newActors);
-        }
     }
 
     public void actNight (Actor actor, List<Actor> newActors) {
         if (!actor.getIsNocturnal()) {
             actor.act(newActors);
         }
-
     }
 
     /**
@@ -179,7 +187,7 @@ public class Simulator
         populate();
 
         // Show the starting state in the view.
-        view.showStatus(step, field);
+        view.showStatus(step, field, isDay);
     }
 
     /**

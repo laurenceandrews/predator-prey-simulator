@@ -14,16 +14,16 @@ public class Mouse extends Prey
     // Characteristics shared by all foxes (class variables).
 
     // The age at which a fox can start to breed.
-    private static final int BREEDING_AGE = 8;
+    private static final int BREEDING_AGE = 3;
     // The age to which a fox can live.
-    private static final int MAX_AGE = 40;
+    private static final int MAX_AGE = 70;
     // The likelihood of a fox breeding.
-    private static final double BREEDING_PROBABILITY = 0.09;
+    private static final double BREEDING_PROBABILITY = 0.15;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 4;
     // The food value of a single rabbit. In effect, this is the
     // number of steps a fox can go before it has to eat again.
-    private static final int FOOD_VALUE = 30;
+    private static final int FOOD_VALUE = 35;
 
     private static final boolean IS_NOCTURNAL = true;
 
@@ -49,7 +49,13 @@ public class Mouse extends Prey
     public Mouse(boolean randomAge, Field field, Location location)
     {    
         super(randomAge, field, location);
-        this.foodLevel = FOOD_VALUE;
+        if (randomAge) {
+            age = rand.nextInt(MAX_AGE);
+            foodLevel = rand.nextInt(FOOD_VALUE);
+        } else {
+            age = 0;
+            foodLevel = FOOD_VALUE;
+        }
         isDiseased = false;
     }
 

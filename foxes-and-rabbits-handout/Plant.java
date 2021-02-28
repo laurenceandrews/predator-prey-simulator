@@ -24,14 +24,17 @@ public class Plant implements Actor
 
     private List<Location> freeAdjacentLocations;
 
-    private static final int BREEDING_AGE = 1;
+    // The age at which a fox can start to breed.
+    private static final int BREEDING_AGE = 10;
     // The age to which a fox can live.
-    private static final int MAX_AGE = 70;
+    private static final int MAX_AGE = 40;
+    // The likelihood of a fox breeding.
+    private static final double BREEDING_PROBABILITY = 0.1;
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 8;
     // The food value of a single rabbit. In effect, this is the
-
-    private static final int FOOD_VALUE = 10;
+    // number of steps a fox can go before it has to eat again.
+    private static final int FOOD_VALUE = 5;
 
     private static final boolean IS_NOCTURNAL = false;
 
@@ -51,6 +54,12 @@ public class Plant implements Actor
         this.field = field;
         setLocation(location);
         diseaseCount = 0;
+
+        if (randomAge) {
+            age = rand.nextInt(MAX_AGE);
+        } else {
+            age = 0;
+        }
 
         freeAdjacentLocations = new ArrayList<>();
     }
@@ -131,13 +140,29 @@ public class Plant implements Actor
         Field field = getField();
         List<Location> free = field.getFreeAdjacentLocations(getLocation());
 
+        int births = breed();
+
         if (free.size() == 8) {
-            for(int b = 0; b < MAX_LITTER_SIZE && free.size() > 0; b++) {
+            for(int b = 0; b < births && free.size() > 0; b++) {
                 Location loc = free.remove(0);
                 Plant seedling = new Plant(false, field, loc);
                 newActors.add(seedling);
             }
         }
+    }
+
+    /**
+     * Generate a number representing the number of births,
+     * if it can breed.
+     * @return The number of births (may be zero).
+     */
+    protected int breed()
+    {
+        int births = 0;
+        if(canBreed() && rand.nextDouble() <= BREEDING_PROBABILITY) {
+            births = rand.nextInt(getMaxLitterSize()) + 1;
+        }
+        return births;
     }
 
     /**

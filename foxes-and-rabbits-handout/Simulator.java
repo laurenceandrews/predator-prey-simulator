@@ -20,16 +20,16 @@ public class Simulator
     private static final int DEFAULT_DEPTH = 80;
 
     // The probability that a fox will be created in any given grid position.
-    private static final double EAGLE_CREATION_PROBABILITY = 0.004;
+    private static final double EAGLE_CREATION_PROBABILITY = 0.01;
     // The probability that a rabbit will be created in any given grid position.
 
-    private static final double SNAKE_CREATION_PROBABILITY = 0.01; 
+    private static final double SNAKE_CREATION_PROBABILITY = 0.025;
 
-    private static final double SCORPION_CREATION_PROBABILITY = 0.012; 
+    private static final double SCORPION_CREATION_PROBABILITY = 0.025;
 
-    private static final double MOUSE_CREATION_PROBABILITY = 0.03; 
-    private static final double CRICKET_CREATION_PROBABILITY = 0.06;
-    private static final double PLANT_CREATION_PROBABILITY = 0.08;
+    private static final double MOUSE_CREATION_PROBABILITY = 0.04;
+    private static final double CRICKET_CREATION_PROBABILITY = 0.05;
+    private static final double PLANT_CREATION_PROBABILITY = 0.06;
     // List of animals in the field.
     private List<Actor> actors;
     // The current state of the field.
@@ -91,7 +91,7 @@ public class Simulator
      */
     public void runLongSimulation()
     {
-        simulate(4000);
+        simulate(1000);
     }
 
     /**
@@ -103,7 +103,7 @@ public class Simulator
     {
         for(int step = 1; step <= numSteps && view.isViable(field); step++) {
             simulateOneStep();
-            delay(60);   // uncomment this to run more slowly
+            //delay(60);   // uncomment this to run more slowly
         }
     }
 
@@ -151,10 +151,10 @@ public class Simulator
     }
 
     public void dayOrNight () {
-        if (step % 3 == 0) {
-            setDay(false);
-        } else {
+        if (step % 2 == 0) {
             setDay(true);
+        } else {
+            setDay(false);
         }
     }
 

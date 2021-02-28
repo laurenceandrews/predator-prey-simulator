@@ -14,16 +14,16 @@ public class Cricket extends Prey
     // Characteristics shared by all foxes (class variables).
 
     // The age at which a fox can start to breed.
-    private static final int BREEDING_AGE = 7;
+    private static final int BREEDING_AGE = 3;
     // The age to which a fox can live.
-    private static final int MAX_AGE = 20;
+    private static final int MAX_AGE = 28;
     // The likelihood of a fox breeding.
-    private static final double BREEDING_PROBABILITY = 0.08;
+    private static final double BREEDING_PROBABILITY = 0.09;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 5;
+    private static final int MAX_LITTER_SIZE = 4;
     // The food value of a single rabbit. In effect, this is the
     // number of steps a fox can go before it has to eat again.
-    private static final int FOOD_VALUE = 10;
+    private static final int FOOD_VALUE = 25;
 
     private static final boolean IS_NOCTURNAL = true;
 
@@ -49,7 +49,13 @@ public class Cricket extends Prey
     public Cricket(boolean randomAge, Field field, Location location)
     {    
         super(randomAge, field, location);
-        this.foodLevel = FOOD_VALUE;
+        if (randomAge) {
+            age = rand.nextInt(MAX_AGE);
+            foodLevel = rand.nextInt(FOOD_VALUE);
+        } else {
+            age = 0;
+            foodLevel = FOOD_VALUE;
+        }
         isDiseased = false;
     }
 

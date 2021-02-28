@@ -151,10 +151,10 @@ public class Simulator
     }
 
     public void dayOrNight () {
-        if (step % 2 == 0) {
-            setDay(true);
-        } else {
+        if (step % 3 == 0) {
             setDay(false);
+        } else {
+            setDay(true);
         }
     }
 

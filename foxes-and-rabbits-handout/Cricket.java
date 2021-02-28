@@ -35,6 +35,8 @@ public class Cricket extends Prey
     private int foodLevel;
 
     private boolean isDiseased;
+    
+    private int fear;
 
     /**
      * Create a fox. A fox can be created as a new born (age zero
@@ -56,7 +58,10 @@ public class Cricket extends Prey
         incrementAge();
         incrementHunger();
         if(isAlive()) {
-            giveBirth(newActors);
+            if (!isScared()) {
+                giveBirth(newActors); 
+            }
+   
             increaseDiseaseCount();
             // Move towards a source of food if found.
             Location newLocation = findFood();
@@ -76,6 +81,13 @@ public class Cricket extends Prey
 
     protected boolean getIsDiseased() {
         return isDiseased;
+    }
+    
+    private void increaseFear()
+    {
+        if (predatorsNearby().size() > 2) {
+            fear++;
+        }
     }
 
     /**
@@ -98,6 +110,12 @@ public class Cricket extends Prey
                 newActors.add(young);
             }
         }
+    }
+    
+    @Override
+    protected boolean isScared()
+    {
+        return fear > 3;
     }
 
     @Override

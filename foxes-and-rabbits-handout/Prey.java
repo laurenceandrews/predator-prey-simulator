@@ -11,7 +11,7 @@ import java.util.Random;
  */
 public abstract class Prey extends Animal
 {    
-    private int fear;
+   
 
     /**
      * Create a new rabbit. A rabbit may be created with age
@@ -24,25 +24,14 @@ public abstract class Prey extends Animal
     public Prey(boolean randomAge, Field field, Location location)
     {
         super(randomAge, field, location);
-        fear = 0;
     }
     
-    private void increaseFear()
-    {
-        if (predatorsNearby().size() > 2) {
-            fear++;
-        }
-    }
+    
 
-    /**
-     * A rabbit can breed if it has reached the breeding age.
-     * @return true if the rabbit can breed, false otherwise.
-     */
-    private boolean isScared()
-    {
-        return fear > 3;
-    }
-
+    
+    abstract boolean isScared();
+    
+    
     abstract int getBreedingAge();
 
     abstract int getMaxAge();

@@ -149,7 +149,7 @@ public abstract class Animal implements Actor
                 }
             }
         }
-        return nearbyPredators;
+        return nearbyPrey;
     }
 
     abstract void giveBirth(List<Actor> newActors);

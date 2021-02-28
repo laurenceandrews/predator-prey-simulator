@@ -35,6 +35,8 @@ public class Mouse extends Prey
     private int foodLevel;
 
     private boolean isDiseased;
+    
+    private int fear;
 
     /**
      * Create a fox. A fox can be created as a new born (age zero
@@ -61,7 +63,9 @@ public class Mouse extends Prey
         incrementHunger();
         increaseDiseaseCount();
         if(isAlive()) {
-            giveBirth(newActors);            
+            if (!isScared()) {
+                giveBirth(newActors); 
+            }
             // Move towards a source of food if found.
             Location newLocation = findFood();
             if(newLocation == null) { 
@@ -81,6 +85,20 @@ public class Mouse extends Prey
     protected boolean getIsDiseased() {
         return isDiseased;
     }
+    
+    @Override
+    protected boolean isScared()
+    {
+        return fear > 3;
+    }
+    
+    private void increaseFear()
+    {
+        if (predatorsNearby().size() > 2) {
+            fear++;
+        }
+    }
+    
 
     /**
      * Check whether or not this fox is to give birth at this step.

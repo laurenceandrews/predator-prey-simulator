@@ -34,6 +34,8 @@ public class Scorpion extends Predator
     // The fox's food level, which is increased by eating rabbits.
     private int foodLevel;
 
+    private boolean isDiseased;
+
     /**
      * Create a fox. A fox can be created as a new born (age zero
      * and not hungry) or with a random age and food level.
@@ -46,6 +48,7 @@ public class Scorpion extends Predator
     {    
         super(randomAge, field, location);
         this.foodLevel = FOOD_VALUE;
+        isDiseased = false;
     }
 
     /**
@@ -57,7 +60,8 @@ public class Scorpion extends Predator
         incrementAge();
         incrementHunger();
         if(isAlive()) {
-            giveBirth(newActors);            
+            giveBirth(newActors);  
+            increaseDiseaseCount();
             // Move towards a source of food if found.
             Location newLocation = findFood();
             if(newLocation == null) { 
@@ -75,7 +79,9 @@ public class Scorpion extends Predator
         }
     }
 
-    
+    protected boolean getIsDiseased() {
+        return isDiseased;
+    }
 
     /**
      * Check whether or not this fox is to give birth at this step.
@@ -98,7 +104,7 @@ public class Scorpion extends Predator
             }
         }
     }
-    
+
     @Override
     boolean mateNearby()
     {   

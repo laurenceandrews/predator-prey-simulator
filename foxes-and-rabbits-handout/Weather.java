@@ -19,9 +19,9 @@ public class Weather
     
     public double stateProbability;
 
-    private static final double FOG_PROBABILITY = 0.1;
+    private static final double FOG_PROBABILITY = 0.2;
 
-    private static final double RAIN_PROBABILITY = 0.5;
+    private static final double RAIN_PROBABILITY = 0.3;
 
     private static final double SUN_PROBABILITY = 1;
     

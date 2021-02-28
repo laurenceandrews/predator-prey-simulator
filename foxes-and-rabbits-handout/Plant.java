@@ -19,7 +19,7 @@ public class Plant implements Actor
     private Field field;
     // The animal's position in the field.
     private Location location;
-    
+
     private boolean drawable;
 
     private List<Location> freeAdjacentLocations;
@@ -33,10 +33,12 @@ public class Plant implements Actor
 
     private static final int FOOD_VALUE = 10;
 
-    private static final boolean IS_NOCTURNAL = true;
-    
+    private static final boolean IS_NOCTURNAL = false;
+
     private int age;
-    
+
+    private int diseaseCount;
+
     /**
      * Create a new animal at location in field.
      * 
@@ -48,10 +50,10 @@ public class Plant implements Actor
         alive = true;
         this.field = field;
         setLocation(location);
+        diseaseCount = 0;
 
         freeAdjacentLocations = new ArrayList<>();
     }
-    
 
     @Override
     public void act(List<Actor> newActors) {
@@ -60,7 +62,7 @@ public class Plant implements Actor
             giveBirth(newActors);            
         }
     }
-    
+
     /**
      * Check whether the animal is alive or not.
      * @return true if the animal is still alive.
@@ -70,7 +72,6 @@ public class Plant implements Actor
     {
         return alive;
     }
-    
 
     /**
      * Indicate that the animal is no longer alive.
@@ -190,5 +191,9 @@ public class Plant implements Actor
     protected int getFoodValue()
     {
         return FOOD_VALUE;
+    }
+
+    public boolean getIsDiseased() {
+        return false;
     }
 }

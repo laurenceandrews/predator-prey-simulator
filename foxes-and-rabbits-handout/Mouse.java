@@ -34,6 +34,8 @@ public class Mouse extends Prey
     // The fox's food level, which is increased by eating rabbits.
     private int foodLevel;
 
+    private boolean isDiseased;
+
     /**
      * Create a fox. A fox can be created as a new born (age zero
      * and not hungry) or with a random age and food level.
@@ -46,6 +48,7 @@ public class Mouse extends Prey
     {    
         super(randomAge, field, location);
         this.foodLevel = FOOD_VALUE;
+        isDiseased = false;
     }
 
     /**
@@ -56,6 +59,7 @@ public class Mouse extends Prey
     public void act(List<Actor> newActors) {
         incrementAge();
         incrementHunger();
+        increaseDiseaseCount();
         if(isAlive()) {
             giveBirth(newActors);            
             // Move towards a source of food if found.
@@ -74,7 +78,9 @@ public class Mouse extends Prey
         }
     }
 
-    
+    protected boolean getIsDiseased() {
+        return isDiseased;
+    }
 
     /**
      * Check whether or not this fox is to give birth at this step.
@@ -97,7 +103,7 @@ public class Mouse extends Prey
             }
         }
     }
-    
+
     @Override
     boolean mateNearby()
     {   

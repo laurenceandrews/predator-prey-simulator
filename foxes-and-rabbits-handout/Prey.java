@@ -40,7 +40,7 @@ public abstract class Prey extends Animal
      */
     private boolean isScared()
     {
-        return fear > 2;
+        return fear > 3;
     }
 
     abstract int getBreedingAge();

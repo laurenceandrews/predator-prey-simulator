@@ -16,10 +16,4 @@ public interface Actor
     boolean isAlive();
 
     boolean getIsNocturnal();
-    
-    boolean getIsDiseased();
-    
-    int getDiseaseCount();
-    
-    void incrementDiseaseCount();
 }

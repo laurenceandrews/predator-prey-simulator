@@ -108,7 +108,7 @@ public class SimulatorView extends JFrame
      * @param step Which iteration step it is.
      * @param field The field whose status is to be displayed.
      */
-    public void showStatus(int step, Field field, int isDay, String currentWeather)
+    public void showStatus(int step, Field field, boolean isDay, String currentWeather)
     {
         if(!isVisible()) {
             setVisible(true);
@@ -116,22 +116,15 @@ public class SimulatorView extends JFrame
             
         stepLabel.setText(STEP_PREFIX + step);
         
-        if (isDay == 1) {
+        if (isDay) {
             todLabel.setText(TOD_PREFIX + "Day");
-        }
-        else if (isDay == -1) {
+        } else {
             todLabel.setText(TOD_PREFIX + "Night");
-        }
-        else {
-            todLabel.setText(TOD_PREFIX + "TEMP");
         }
         
         weatherLabel.setText(WEATHER_PREFIX + currentWeather);
         
         stats.reset();
-        
-        
-        
         
         fieldView.preparePaint();
 

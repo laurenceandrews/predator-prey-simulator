@@ -20,15 +20,13 @@ public abstract class Animal implements Actor
     private boolean isMale;
 
     private boolean drawable;
-    
+
     private boolean isDiseased;
-    
+
     private int diseaseCount;
 
     private static final double GENDER_PROBABILITY = 0.5;
-    
     private static final double DISEASED_PROBABILITY = 0.05;
-
     // The animal's field.
     private Field field;
     // The animal's position in the field.
@@ -61,7 +59,7 @@ public abstract class Animal implements Actor
         if (maleOrFemale < GENDER_PROBABILITY) {
             isMale = true;
         }
-        
+
         int diseasedOrHealthy = rand.nextInt(1);
         if (diseasedOrHealthy < DISEASED_PROBABILITY) {
             isDiseased = true;
@@ -172,18 +170,15 @@ public abstract class Animal implements Actor
         }
         return false;        
     }
-    
-    @Override
-    public boolean getIsDiseased() {
-        return isDiseased;
-    }
-    
+
     protected void setIsDiseased() {
         int diseasedOrHealthy = rand.nextInt(1);
         if (diseasedOrHealthy < DISEASED_PROBABILITY) {
             isDiseased = true;
         }
     }
+
+    protected abstract boolean getIsDiseased();
 
     protected boolean getIsMale() {
         return isMale;
@@ -211,6 +206,20 @@ public abstract class Animal implements Actor
         return getAge() >= getBreedingAge();
     }
 
+    public void increaseDiseaseCount() {
+        diseaseCount++;
+    }
+
+    public int getDiseaseCount() {
+        return diseaseCount;
+    }
+
+    public void diseased() {
+        if (diseasedNearby()) {
+            setIsDiseased();
+        }
+    }
+
     abstract int getBreedingAge();
 
     abstract int getMaxAge();
@@ -228,14 +237,4 @@ public abstract class Animal implements Actor
     abstract void setFoodLevel(int foodValue);
 
     abstract public boolean getIsNocturnal();
-    
-    @Override
-    public int getDiseaseCount() {
-        return diseaseCount;
-    }
-    
-    @Override
-    public void incrementDiseaseCount() {
-        diseaseCount++;
-    }
 }

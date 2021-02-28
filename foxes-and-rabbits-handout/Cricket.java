@@ -34,6 +34,8 @@ public class Cricket extends Prey
     // The fox's food level, which is increased by eating rabbits.
     private int foodLevel;
 
+    private boolean isDiseased;
+
     /**
      * Create a fox. A fox can be created as a new born (age zero
      * and not hungry) or with a random age and food level.
@@ -46,6 +48,7 @@ public class Cricket extends Prey
     {    
         super(randomAge, field, location);
         this.foodLevel = FOOD_VALUE;
+        isDiseased = false;
     }
 
     @Override
@@ -53,7 +56,8 @@ public class Cricket extends Prey
         incrementAge();
         incrementHunger();
         if(isAlive()) {
-            giveBirth(newActors);            
+            giveBirth(newActors);
+            increaseDiseaseCount();
             // Move towards a source of food if found.
             Location newLocation = findFood();
             if(newLocation == null) { 
@@ -70,10 +74,8 @@ public class Cricket extends Prey
         }
     }
 
-    public void diseased() {
-        if (diseasedNearby()) {
-            setIsDiseased();
-        }
+    protected boolean getIsDiseased() {
+        return isDiseased;
     }
 
     /**
@@ -97,7 +99,7 @@ public class Cricket extends Prey
             }
         }
     }
-    
+
     @Override
     boolean mateNearby()
     {   

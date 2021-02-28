@@ -33,6 +33,8 @@ public class Eagle extends Predator
     private int age;
     // The fox's food level, which is increased by eating rabbits.
     private int foodLevel;
+    
+    private boolean isDiseased;
 
     /**
      * Create a fox. A fox can be created as a new born (age zero
@@ -46,6 +48,7 @@ public class Eagle extends Predator
     {    
         super(randomAge, field, location);
         this.foodLevel = FOOD_VALUE;
+        isDiseased = false;
     }
 
     /**
@@ -56,6 +59,7 @@ public class Eagle extends Predator
     public void act(List<Actor> newActors) {
         incrementAge();
         incrementHunger();
+        increaseDiseaseCount();
         if(isAlive()) {
             giveBirth(newActors);            
             // Move towards a source of food if found.
@@ -73,8 +77,10 @@ public class Eagle extends Predator
             }
         }
     }
-    
-    
+
+    protected boolean getIsDiseased() {
+        return isDiseased;
+    }
 
     /**
      * Check whether or not this fox is to give birth at this step.
@@ -97,7 +103,7 @@ public class Eagle extends Predator
             }
         }
     }
-    
+
     @Override
     boolean mateNearby()
     {   

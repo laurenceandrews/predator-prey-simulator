@@ -1,11 +1,12 @@
 #BlueJ class context
 comment0.target=Actor
+comment0.text=\n\ An\ interface\ allowing\ the\ act\ based\ method\ to\ be\ abstracted\ from\ other\n\ classes.\n\ \n\ @author\ Benedict\ Morley\ and\ Laurence\ Andrews\n\ @version\ (2)\n
 comment1.params=newActors
 comment1.target=void\ act(java.util.List)
-comment1.text=\r\n\ Perform\ the\ actor's\ regular\ behavior.\r\n\ @param\ newActors\ A\ list\ for\ storing\ newly\ created\r\n\ actors.\r\n
+comment1.text=\n\ Perform\ the\ actor's\ regular\ behavior.\n\ @param\ newActors\ A\ list\ for\ storing\ newly\ created\n\ actors.\n
 comment2.params=
 comment2.target=boolean\ isAlive()
-comment2.text=\r\n\ Is\ the\ actor\ still\ active?\r\n\ @return\ true\ if\ still\ active,\ false\ if\ not.\r\n
+comment2.text=\n\ Is\ the\ actor\ still\ active?\n\ @return\ true\ if\ still\ active,\ false\ if\ not.\n
 comment3.params=
 comment3.target=boolean\ getIsNocturnal()
 numComments=4

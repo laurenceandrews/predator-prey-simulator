@@ -11,7 +11,7 @@ import java.util.HashMap;
  */
 public class FieldStats
 {
-    // Counters for each type of entity (fox, rabbit, etc.) in the simulation.
+    // Counters for each type of entity in the simulation.
     private HashMap<Class, Counter> counters;
     // Whether the counters are currently up to date.
     private boolean countsValid;
@@ -21,7 +21,7 @@ public class FieldStats
      */
     public FieldStats()
     {
-        // Set up a collection for counters for each type of animal that
+        // Set up a collection for counters for each type of actor that
         // we might find
         counters = new HashMap<>();
         countsValid = true;
@@ -61,23 +61,23 @@ public class FieldStats
     }
 
     /**
-     * Increment the count for one class of animal.
-     * @param animalClass The class of animal to increment.
+     * Increment the count for one class of actor.
+     * @param actorClass The class of actor to increment.
      */
-    public void incrementCount(Class animalClass)
+    public void incrementCount(Class actorClass)
     {
-        Counter count = counters.get(animalClass);
+        Counter count = counters.get(actorClass);
         if(count == null) {
             // We do not have a counter for this species yet.
             // Create one.
-            count = new Counter(animalClass.getName());
-            counters.put(animalClass, count);
+            count = new Counter(actorClass.getName());
+            counters.put(actorClass, count);
         }
         count.increment();
     }
 
     /**
-     * Indicate that an animal count has been completed.
+     * Indicate that an actor count has been completed.
      */
     public void countFinished()
     {
@@ -117,9 +117,9 @@ public class FieldStats
         reset();
         for(int row = 0; row < field.getDepth(); row++) {
             for(int col = 0; col < field.getWidth(); col++) {
-                Object animal = field.getObjectAt(row, col);
-                if(animal != null) {
-                    incrementCount(animal.getClass());
+                Object actor = field.getObjectAt(row, col);
+                if(actor != null) {
+                    incrementCount(actor.getClass());
                 }
             }
         }

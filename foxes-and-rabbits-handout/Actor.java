@@ -1,5 +1,12 @@
 import java.util.List;
 
+/**
+ * An interface allowing the act based method to be abstracted from other
+ * classes.
+ * 
+ * @author Benedict Morley and Laurence Andrews
+ * @version (2)
+ */
 public interface Actor
 {
     /**

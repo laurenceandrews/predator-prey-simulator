@@ -11,7 +11,7 @@ import java.util.Map;
  * Colors for each type of species can be defined using the
  * setColor method.
  * 
- * @author David J. Barnes and Michael Kölling
+ * @author David J. Barnes and Michael Kölling    Edited by Benedict Morley and Laurence Andrews
  * @version 2016.02.29
  */
 public class SimulatorView extends JFrame
@@ -71,13 +71,13 @@ public class SimulatorView extends JFrame
     }
     
     /**
-     * Define a color to be used for a given class of animal.
-     * @param animalClass The animal's Class object.
+     * Define a color to be used for a given class of actor.
+     * @param actorClass The actor's Class object.
      * @param color The color to be used for the given class.
      */
-    public void setColor(Class drawableClass, Color color)
+    public void setColor(Class actorClass, Color color)
     {
-        colors.put(drawableClass, color);
+        colors.put(actorClass, color);
     }
 
     /**
@@ -89,11 +89,11 @@ public class SimulatorView extends JFrame
     }
 
     /**
-     * @return The color to be used for a given class of animal.
+     * @return The color to be used for a given class of actor.
      */
-    private Color getColor(Class drawableClass)
+    private Color getColor(Class actorClass)
     {
-        Color col = colors.get(drawableClass);
+        Color col = colors.get(actorClass);
         if(col == null) {
             // no color defined for this class
             return UNKNOWN_COLOR;
@@ -130,10 +130,10 @@ public class SimulatorView extends JFrame
 
         for(int row = 0; row < field.getDepth(); row++) {
             for(int col = 0; col < field.getWidth(); col++) {
-                Object drawable = field.getObjectAt(row, col);
-                if(drawable != null) {
-                    stats.incrementCount(drawable.getClass());
-                    fieldView.drawMark(col, row, getColor(drawable.getClass()));
+                Object actor = field.getObjectAt(row, col);
+                if(actor != null) {
+                    stats.incrementCount(actor.getClass());
+                    fieldView.drawMark(col, row, getColor(actor.getClass()));
                 }  else {
                     fieldView.drawMark(col, row, EMPTY_COLOR);
                 }

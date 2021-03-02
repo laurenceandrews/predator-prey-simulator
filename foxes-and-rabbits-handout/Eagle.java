@@ -3,44 +3,52 @@ import java.util.Iterator;
 import java.util.Random;
 
 /**
- * A simple model of a fox.
- * Foxes age, move, eat rabbits, and die.
+ * A simple model of an eagle.
+ * Eagles age, move, eat other animals, die, spread disease and take other actions.
  * 
- * @author David J. Barnes and Michael Kölling
+ * @author Benedict Morley and Laurence Andrews
  * @version 2016.02.29 (2)
  */
 public class Eagle extends Predator
 {   
-    // Characteristics shared by all foxes (class variables).
+    // Characteristics shared by all eagles (class variables).
 
-    // The age at which a fox can start to breed.
-    private static final int BREEDING_AGE = 15;
-    // The age to which a fox can live.
+    // The age at which an eagle can start to breed.
+    private static final int BREEDING_AGE = 12;
+
+    // The age to which an eagle can live.
     private static final int MAX_AGE = 200;
-    // The likelihood of a fox breeding.
-    private static final double BREEDING_PROBABILITY = 0.07;
+
+    // The likelihood of an eagle breeding.
+    private static final double BREEDING_PROBABILITY = 0.064;
+
     // The maximum number of births.
     private static final int MAX_LITTER_SIZE = 4;
-    // The food value of a single rabbit. In effect, this is the
-    // number of steps a fox can go before it has to eat again.
+
+    // The food value of an eagle. In effect, this is the
+    // number of steps an eagle can go before it has to eat again.
     private static final int FOOD_VALUE = 150;
 
+    // The nocturnal status of an eagle.
     private static final boolean IS_NOCTURNAL = false;
 
     private static final Random rand = Randomizer.getRandom();
+
     // Individual characteristics (instance fields).
-    // The fox's age.
+    // The eagle's age.
     private int age;
-    // The fox's food level, which is increased by eating rabbits.
+
+    // The eagle's food level, which is increased by eating.
     private int foodLevel;
-    
+
+    // The current diseased status of an eagle.
     private boolean isDiseased;
 
     /**
-     * Create a fox. A fox can be created as a new born (age zero
+     * Create an eagle. An eagle can be created as a new born (age zero
      * and not hungry) or with a random age and food level.
      * 
-     * @param randomAge If true, the fox will have random age and hunger level.
+     * @param randomAge If true, the eagle will have random age and hunger level.
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
@@ -54,20 +62,25 @@ public class Eagle extends Predator
             age = 0;
             foodLevel = FOOD_VALUE;
         }
-        isDiseased = false;
     }
 
     /**
-     * Make this animal act - that is: make it do
+     * Make this eagle act - that is: make it do
      * whatever it wants/needs to do.
-     * @param newAnimals A list to receive newly born animals.
+     * @param newActors A list to receive newly born eagles.
      */
     public void act(List<Actor> newActors) {
         incrementAge();
         incrementHunger();
-        increaseDiseaseCount();
+        incrementDiseaseCount();
+        if (getDiseaseCount() > 3) {
+            setDead();
+        }
         if(isAlive()) {
-            giveBirth(newActors);            
+            giveBirth(newActors); 
+            if (diseasedNearby()) {
+                setIsDiseased();
+            }
             // Move towards a source of food if found.
             Location newLocation = findFood();
             if(newLocation == null) { 
@@ -84,19 +97,23 @@ public class Eagle extends Predator
         }
     }
 
+    /**
+     * Get the current disease status of an eagle.
+     * @return boolean of disease status.
+     */
     protected boolean getIsDiseased() {
         return isDiseased;
     }
 
     /**
-     * Check whether or not this fox is to give birth at this step.
+     * Check whether or not this eagle is to give birth at this step.
      * New births will be made into free adjacent locations.
-     * @param newFoxes A list to return newly born foxes.
+     * @param newActors A list to return newly born eagles.
      */
     @Override
     protected void giveBirth(List<Actor> newActors)
     {
-        // New foxes are born into adjacent locations.
+        // New eagles are born into adjacent locations.
         // Get a list of adjacent free locations.
         Field field = getField();
         List<Location> free = field.getFreeAdjacentLocations(getLocation());
@@ -110,6 +127,10 @@ public class Eagle extends Predator
         }
     }
 
+    /**
+     * Check whether there are any nearby eagles of the opposite gender.
+     * @return boolean of any nearby opposite gender eagles.
+     */
     @Override
     boolean mateNearby()
     {   
@@ -129,11 +150,20 @@ public class Eagle extends Predator
         return false;        
     }
 
+    /**
+     * Get the nocturnal status of an eagle
+     * @return boolean of nocturnal status.
+     */
     @Override
     public boolean getIsNocturnal() {
         return IS_NOCTURNAL;
     }
 
+    /**
+     * Determine what objects are nearby to the eagle and whether or not 
+     * they are edible.
+     * @return Location of nearby food.
+     */
     protected Location findFood()
     {
         Field field = getField();
@@ -162,7 +192,7 @@ public class Eagle extends Predator
     }
 
     /**
-     * Increase the age. This could result in the fox's death.
+     * Increase the age. This could result in the eagle's death.
      */
     private void incrementAge()
     {
@@ -173,7 +203,7 @@ public class Eagle extends Predator
     }
 
     /**
-     * Make this fox more hungry. This could result in the fox's death.
+     * Make this eagle more hungry. This could result in the eagle's death.
      */
     private void incrementHunger()
     {
@@ -183,48 +213,80 @@ public class Eagle extends Predator
         }
     }
 
+    /**
+     * Get the max age of an eagle.
+     * @return int of max age.
+     */
     @Override
     protected int getMaxAge()
     {
         return MAX_AGE;
     }
 
+    /**
+     * Get the max breeding age of an eagle.
+     * @return int of max breeding age.
+     */
     @Override
     protected int getBreedingAge()
     {
         return BREEDING_AGE;
     }
 
+    /**
+     * Get the breeding probability of an eagle.
+     * @return double of breeding probability.
+     */
     @Override
     protected double getBreedingProbability()
     {
         return BREEDING_PROBABILITY;
     }
 
+    /**
+     * Get the max litter size of an eagle.
+     * @return int of max litter size.
+     */
     @Override
     protected int getMaxLitterSize()
     {
         return MAX_LITTER_SIZE;
     }
 
+    /**
+     * Get the food value of an eagle.
+     * @return int of food value.
+     */
     @Override
     protected int getFoodValue()
     {
         return FOOD_VALUE;
     }
 
+    /**
+     * Get the age of an eagle.
+     * @param int of age.
+     */
     @Override
     protected int getAge()
     {
         return age;
     }
 
+    /** 
+     * Set the current age of an eagle.
+     * @param age The current age of the specific eagle.
+     */
     @Override
     protected void setAge(int age)
     {
         this.age = age;
     }
 
+    /** 
+     * Set the current food level of an eagle.
+     * @param foodValue The curretn food value of the specific eagle.
+     */
     @Override
     protected void setFoodLevel(int foodValue) {
         this.foodLevel = foodValue;

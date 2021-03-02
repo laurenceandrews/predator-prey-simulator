@@ -1,15 +1,19 @@
 #BlueJ class context
 comment0.target=Weather
-comment0.text=\n\ A\ class\ representing\ shared\ characteristics\ of\ animals.\n\ \n\ @author\ David\ J.\ Barnes\ and\ Michael\ K\u00F6lling\n\ @version\ 2016.02.29\ (2)\n
+comment0.text=\n\ A\ class\ representing\ the\ weather\ system\ of\ the\ simulation.\n\ \n\ @author\ Benedict\ Morley\ and\ Laurence\ Andrews\n\ @version\ (2)\n
 comment1.params=
 comment1.target=Weather()
-comment1.text=\n\ Create\ a\ new\ animal\ at\ location\ in\ field.\n\ \n\ @param\ field\ The\ field\ currently\ occupied.\n\ @param\ location\ The\ location\ within\ the\ field.\n
+comment1.text=\n\ Construct\ a\ weather\ system.\ The\ initial\ state\ of\ the\ simulation\ \n\ is\ "sun".\n
 comment2.params=
 comment2.target=void\ setWeatherState()
+comment2.text=\n\ Set\ the\ current\ weather\ state\ of\ the\ system\ depending\n\ on\ a\ random\ value\ that\ is\ generated.\n
 comment3.params=
 comment3.target=java.lang.String\ checkLastWeather()
+comment3.text=\n\ Check\ the\ top\ entity\ of\ the\ stack\ of\ past\ weathers.\n\ @return\ The\ latest\ weather\ to\ occur.\n
 comment4.params=
 comment4.target=java.lang.String\ twoDayReport()
+comment4.text=\n\ Check\ the\ past\ weather,\ if\ it\ is\ sunny\ then\ pop\ that\ from\ \n\ the\ top\ of\ the\ stack\ and\ check\ the\ next\ weather\ then\ push\ \n\ the\ current\ weather\ back\ again.\n\ @return\ The\ past\ two\ days\ weather\ as\ a\ concatenated\ string.\n
 comment5.params=
 comment5.target=void\ reset()
+comment5.text=\n\ Reset\ the\ stack\ of\ weathers\ by\ popping\ all\ current\ values\n\ within\ it.\n
 numComments=6

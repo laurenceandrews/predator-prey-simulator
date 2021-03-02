@@ -6,10 +6,10 @@ import java.awt.Color;
 
 /**
  * A simple predator-prey simulator, based on a rectangular field
- * containing rabbits and foxes.
+ * containing Eagles, Scorpions, Snakes, Rabbits, Crickets and Plants.
  * 
- * @author David J. Barnes and Michael Kölling
- * @version 2016.02.29 (2)
+ * @author Benedict Morley and Laurence Andrews
+ * @version (2)
  */
 public class Simulator
 {
@@ -19,26 +19,37 @@ public class Simulator
     // The default depth of the grid.
     private static final int DEFAULT_DEPTH = 80;
 
-    // The probability that a fox will be created in any given grid position.
-    private static final double EAGLE_CREATION_PROBABILITY = 0.01;
-    // The probability that a rabbit will be created in any given grid position.
-
+    // The probability that an eagle will be created in any given grid position.
+   private static final double EAGLE_CREATION_PROBABILITY = 0.01;
+    
+    // The probability that a snake will be created in any given grid position.
     private static final double SNAKE_CREATION_PROBABILITY = 0.025;
 
+    // The probability that a scorpion will be created in any given grid position.
     private static final double SCORPION_CREATION_PROBABILITY = 0.025;
 
+    // The probability that a mouse will be created in any given grid position.
     private static final double MOUSE_CREATION_PROBABILITY = 0.04;
+    
+    // The probability that a cricket will be created in any given grid position.
     private static final double CRICKET_CREATION_PROBABILITY = 0.05;
+    
+    // The probability that a plant will be created in any given grid position.
     private static final double PLANT_CREATION_PROBABILITY = 0.06;
+    
     // List of animals in the field.
     private List<Actor> actors;
+    
     // The current state of the field.
     private Field field;
+    
     // The current step of the simulation.
     private int step;
+    
     // A graphical view of the simulation.
     private SimulatorView view;
 
+    
     private Weather weather;
 
     private String currentWeather;
@@ -46,7 +57,8 @@ public class Simulator
     private boolean isDay;
 
     /**
-     * Construct a simulation field with default size.
+     * Construct a simulation field with default size and a Weather 
+     * system.
      */
     public Simulator()
     {
@@ -55,7 +67,8 @@ public class Simulator
     }
 
     /**
-     * Create a simulation field with the given size.
+     * Create a simulation field with the given size and a weather 
+     * system, as well as assinging colours to entities of the field.
      * @param depth Depth of the field. Must be greater than zero.
      * @param width Width of the field. Must be greater than zero.
      */
@@ -87,11 +100,11 @@ public class Simulator
 
     /**
      * Run the simulation from its current state for a reasonably long period,
-     * (4000 steps).
+     * (1500 steps).
      */
     public void runLongSimulation()
     {
-        simulate(1000);
+        simulate(1500);
     }
 
     /**
@@ -110,7 +123,9 @@ public class Simulator
     /**
      * Run the simulation from its current state for a single step.
      * Iterate over the whole field updating the state of each
-     * fox and rabbit.
+     * actor as well as changing the weather and the day/night cycle.
+     * Nocturnal actors act during the night, the others act during
+     * the night.
      */
     public void simulateOneStep()
     {
@@ -119,6 +134,7 @@ public class Simulator
         weather.setWeatherState();
         currentWeather = weather.checkLastWeather();
         plantRegrowth();
+        
         // Provide space for newborn animals.
         List<Actor> newActors = new ArrayList<>();
 
@@ -136,20 +152,32 @@ public class Simulator
             }
         }
 
-        // Add the newly born foxes and rabbits to the main lists.
+        // Add the newly born actors to the main lists.
         actors.addAll(newActors);
 
         view.showStatus(step, field, isDay, currentWeather);
     }
+    
 
+    /**
+     * A getter to return the current steps.
+     * @return the current step of the system.
+     */
     public int getSteps() {
         return step;
     }
 
+    /**
+     * Set the current day of the simulation.
+     * @param isDay the curretn day of the simulation.
+     */
     public void setDay(boolean isDay) {
         this.isDay = isDay;
     }
 
+    /**
+     * Change simulation to day if steps are even, else set to night. 
+     */
     public void dayOrNight () {
         if (step % 2 == 0) {
             setDay(true);
@@ -158,6 +186,11 @@ public class Simulator
         }
     }
 
+    /**
+     * If the current weather is sunny and the past day was raining 
+     * we assume plants would be able to grow, therefore they fill
+     * available spaces within the simulation.
+     */
     public void plantRegrowth()
     {
         Random rand = Randomizer.getRandom();
@@ -174,6 +207,12 @@ public class Simulator
         }
     }
 
+    /**
+     * If the current weather is foggy and an actor is a predator,
+     * they will not act for that step.
+     * @param actor An actor within the simulation
+     * @return A boolean value of whether an action should cease.
+     */
     public boolean fogStopAction(Actor actor)
     {
         Random rand = Randomizer.getRandom();
@@ -183,15 +222,25 @@ public class Simulator
             return false;
         }
     }
-
+    
+    /**
+     * Non-nocturnal actors act for that step.
+     * @param actor An actor within the simulation
+     * @param newActors A list of the new actors within the simulation.
+     */
     public void actDay(Actor actor, List<Actor> newActors) {
-        if (actor.getIsNocturnal()) {
+        if (!actor.getIsNocturnal()) {
             actor.act(newActors);
         }
     }
 
+    /**
+     * Nocturnal actors act for that step.
+     * @param actor An actor within the simulation
+     * @param newActors A list of the new actors within the simulation.
+     */
     public void actNight (Actor actor, List<Actor> newActors) {
-        if (!actor.getIsNocturnal()) {
+        if (actor.getIsNocturnal()) {
             actor.act(newActors);
         }
     }
@@ -210,7 +259,7 @@ public class Simulator
     }
 
     /**
-     * Randomly populate the field with foxes and rabbits.
+     * Randomly populate the field with drawable entities.
      */
     private void populate()
     {

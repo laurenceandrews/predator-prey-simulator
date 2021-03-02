@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * A class representing shared characteristics of animals.
+ * A class representing shared characteristics of plants.
  * 
  * @author David J. Barnes and Michael Kölling
  * @version 2016.02.29 (2)
@@ -13,11 +13,11 @@ public class Plant implements Actor
 {
     private static final Random rand = Randomizer.getRandom();
 
-    // Whether the animal is alive or not.
+    // Whether the plant is alive or not.
     private boolean alive;
-    // The animal's field.
+    // The plant's field.
     private Field field;
-    // The animal's position in the field.
+    // The plant's position in the field.
     private Location location;
 
     private boolean drawable;
@@ -43,10 +43,12 @@ public class Plant implements Actor
     private int diseaseCount;
 
     /**
-     * Create a new animal at location in field.
+     * Create a new plant at location in field give it a disease count
+     * and random age.
      * 
      * @param field The field currently occupied.
      * @param location The location within the field.
+     * @param randomAge The starting age of a plant
      */
     public Plant(boolean randomAge, Field field, Location location)
     {
@@ -65,6 +67,11 @@ public class Plant implements Actor
     }
 
     @Override
+    /**
+     * This method overrides the actor interface's act method, age is increased for each step and plants are
+     * able to give birth which acts as the plant's growth.
+     * @param newActors A list of new actors within the simulation.
+     */
     public void act(List<Actor> newActors) {
         incrementAge();
         if(isAlive()) {
@@ -73,17 +80,16 @@ public class Plant implements Actor
     }
 
     /**
-     * Check whether the animal is alive or not.
-     * @return true if the animal is still alive.
+     * Check whether the plant is alive or not.
+     * @return true if the plant is still alive.
      */
-
     public boolean isAlive()
     {
         return alive;
     }
 
     /**
-     * Indicate that the animal is no longer alive.
+     * Indicate that the plant is no longer alive.
      * It is removed from the field.
      */
     protected void setDead()
@@ -97,8 +103,8 @@ public class Plant implements Actor
     }
 
     /**
-     * Return the animal's location.
-     * @return The animal's location.
+     * Return the plant's location.
+     * @return The plant's location.
      */
     protected Location getLocation()
     {
@@ -106,8 +112,8 @@ public class Plant implements Actor
     }
 
     /**
-     * Place the animal at the new location in the given field.
-     * @param newLocation The animal's new location.
+     * Place the plant at the new location in the given field.
+     * @param newLocation The plant's new location.
      */
     protected void setLocation(Location newLocation)
     {
@@ -119,20 +125,29 @@ public class Plant implements Actor
     }
 
     /**
-     * Return the animal's field.
-     * @return The animal's field.
+     * Return the plant's field.
+     * @return The plant's field.
      */
     protected Field getField()
     {
         return field;
     }
 
+    
+    /**
+     * Check if there are any objects in the locations surrounding an entity.
+     */
     protected boolean surroundingsEmpty()
     {
         freeAdjacentLocations = field.getFreeAdjacentLocations(location);
         return freeAdjacentLocations.size() <= 0;
     }
 
+    /**
+     * A plant can give birth only if every location surrounding it is empty. This means they form clusters
+     * of 9 that then can't grow any larger.
+     * @param newActors A list of new actors within the simulation.
+     */
     protected void giveBirth(List<Actor> newActors)
     {
         // New foxes are born into adjacent locations.
@@ -166,7 +181,7 @@ public class Plant implements Actor
     }
 
     /**
-     * A fox can breed if it has reached the breeding age.
+     * A plant can breed if it has reached the breeding age.
      */
     private boolean canBreed()
     {
@@ -174,7 +189,7 @@ public class Plant implements Actor
     }
 
     /**
-     * Increase the age. This could result in the fox's death.
+     * Increase the age. This could result in the plant's death.
      */
     private void incrementAge()
     {
@@ -184,40 +199,72 @@ public class Plant implements Actor
         }
     }
 
+    /** 
+     * Getter method allowing the retrieval of max age.
+     * @return int The max age of a plant
+     */
     protected int getMaxAge()
     {
         return MAX_AGE;
     }
 
+    /** 
+     * Getter method allowing the retrieval of the breeding age of a plant
+     * @return int The breeding age of a plant.
+     */
     protected int getBreedingAge()
     {
         return BREEDING_AGE;
     }
 
+    /** 
+     * Getter method allowing the retrieval of the max litter size of a plant.
+     * @return int The maximum litter size a plant can produce.
+     */
     protected int getMaxLitterSize()
     {
         return MAX_LITTER_SIZE;
     }
 
+    /** 
+     * Getter method allowing the retrieval of the current age of a plant
+     * @return int The current age of the specific plant.
+     */
     protected int getAge()
     {
         return age;
     }
 
+    /** 
+     * Setter method allowing the assinging of age to a specific plant.
+     * @param age The age of the plant
+     */
     protected void setAge(int age)
     {
         this.age = age;
     }
 
+    /** 
+     * Getter method allowing the retrieval of nocturnal status.
+     * @return boolean value of nocturnal status.
+     */
     public boolean getIsNocturnal() {
         return IS_NOCTURNAL;
     }
 
+    /** 
+     * Getter method allowing the retrieval of the food value of the plant.
+     * @return int of the food value.
+     */
     protected int getFoodValue()
     {
         return FOOD_VALUE;
     }
 
+    /** 
+     * Getter method allowing the retrieval of disease status.
+     * @return boolean value of the disease status.
+     */
     public boolean getIsDiseased() {
         return false;
     }
